@@ -10,6 +10,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import com.khomichenko.sergey.homework1410.R
 import com.khomichenko.sergey.homework1410.databinding.FragmentRegistrationBinding
 import com.khomichenko.sergey.homework1410.di.App
 import com.khomichenko.sergey.homework1410.presentation.auth_screen.view_models.RegistrationFragmentViewModel
@@ -23,7 +25,6 @@ class RegistrationFragment : Fragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var viewModel: RegistrationFragmentViewModel
-
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -49,10 +50,12 @@ class RegistrationFragment : Fragment() {
         mBinding.registrateBtn.setOnClickListener {
             val login = mBinding.loginEt.text.toString()
             val password = mBinding.passwordEt.text.toString()
-            Log.d(TAG, "sendData: $login $password")
             viewModel.register(login, password)
         }
     }
 
-
+    private fun navigation(){
+        val navController = findNavController()
+        navController.navigate(R.id.action_registrationFragment2_to_authFragment3)
+    }
 }

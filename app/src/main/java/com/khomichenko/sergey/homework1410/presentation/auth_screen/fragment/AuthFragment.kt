@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.khomichenko.sergey.homework1410.R
 import com.khomichenko.sergey.homework1410.databinding.FragmentAuthBinding
 import com.khomichenko.sergey.homework1410.databinding.FragmentRegistrationBinding
@@ -49,5 +50,10 @@ class AuthFragment : Fragment() {
             val password = mBinding.passwordEt.text.toString()
             viewModel.login(login, password)
         }
+    }
+
+    private fun navigation(){
+        val navigation = findNavController()
+        // TODO: 12/5/2021 Добавить следующий экран
     }
 }

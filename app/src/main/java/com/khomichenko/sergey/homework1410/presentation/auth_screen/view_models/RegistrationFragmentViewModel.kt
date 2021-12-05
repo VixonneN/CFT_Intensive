@@ -3,6 +3,8 @@ package com.khomichenko.sergey.homework1410.presentation.auth_screen.view_models
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.khomichenko.sergey.homework1410.data.auth.auth_token.Preferences
+import com.khomichenko.sergey.homework1410.data.auth.auth_token.PreferencesProvider
 import com.khomichenko.sergey.homework1410.domain.entity.AuthEntity
 import com.khomichenko.sergey.homework1410.domain.usecase.LoginRequestUseCase
 import com.khomichenko.sergey.homework1410.domain.usecase.RegisterRequestUseCase
@@ -45,13 +47,14 @@ class RegistrationFragmentViewModel @Inject constructor(
     fun login(login: String, password: String) {
         val dataRegisterBody = AuthEntity(login, password)
 
-        // D/TokenRequest: login: kotlin.Unit
         viewModelScope.launch(handler + Dispatchers.IO) {
             try {
                 val response = loginRequestUseCase.invoke(dataRegisterBody).execute()
                 withContext(Dispatchers.Main) {
-                    val string = response.body()
-                    Log.d("TokenRequest", "login: $string")
+                    val token = response.body()
+                    if (token != null) {
+                        PreferencesProvider.preferences.saveToken(token)
+                    }
                 }
             } catch (e: IOException) {
                 Log.e("TAG", "register: $e", IOException())

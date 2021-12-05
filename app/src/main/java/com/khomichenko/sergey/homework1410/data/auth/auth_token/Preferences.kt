@@ -18,5 +18,4 @@ class Preferences(context: Context) {
         private const val PREFERENCES_NAME = "token_preferences"
         private const val ACCESS_TOKEN_KEY = "ACCESS_TOKEN_KEY"
     }
-
 }
