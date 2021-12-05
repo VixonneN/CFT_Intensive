@@ -30,7 +30,8 @@ class RegistrationFragmentViewModel @Inject constructor(
             try {
                 val response = registerRequestUseCase.invoke(dataRegisterBody).execute()
                 withContext(Dispatchers.Main) {
-                    val string = response.body().toString()
+                    //todo возможность перенести его на следующий экран
+                    val string = response.body()?.name
                     Log.d("TokenRequest", "register: $string")
                 }
             } catch (e: IOException) {
@@ -44,6 +45,7 @@ class RegistrationFragmentViewModel @Inject constructor(
     fun login(login: String, password: String) {
         val dataRegisterBody = AuthEntity(login, password)
 
+        // D/TokenRequest: login: kotlin.Unit
         viewModelScope.launch(handler + Dispatchers.IO) {
             try {
                 val response = loginRequestUseCase.invoke(dataRegisterBody).execute()

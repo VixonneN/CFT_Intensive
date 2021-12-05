@@ -44,10 +44,9 @@ class AuthFragment : Fragment() {
     }
 
     private fun getText() {
-        val login = mBinding.loginEt.text.toString()
-        val password = mBinding.passwordEt.text.toString()
-
         mBinding.loginBtn.setOnClickListener {
+            val login = mBinding.loginEt.text.toString()
+            val password = mBinding.passwordEt.text.toString()
             viewModel.login(login, password)
         }
     }

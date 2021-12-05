@@ -1,5 +1,6 @@
 package com.khomichenko.sergey.homework1410.data.auth.network
 
+import com.google.gson.GsonBuilder
 import com.khomichenko.sergey.homework1410.data.auth.auth_token.AuthInterceptor
 import com.khomichenko.sergey.homework1410.data.auth.data_source.Api
 import okhttp3.OkHttpClient
@@ -24,10 +25,14 @@ class NetworkSettings {
             HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
         builder.addInterceptor(loggingInterceptor)
         builder.addInterceptor(AuthInterceptor())
+        val gson = GsonBuilder()
+            .setLenient()
+            .create()
+
         val retrofit: Retrofit = Retrofit.Builder()
             .client(builder.build())
             .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
         api = retrofit.create(Api::class.java)
     }

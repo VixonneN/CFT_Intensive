@@ -1,7 +1,9 @@
 package com.khomichenko.sergey.homework1410.presentation.auth_screen.fragment
 
+import android.content.ContentValues.TAG
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -40,7 +42,16 @@ class RegistrationFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        viewModel.register("testadmin1234", "string")
+        sendData()
+    }
+
+    private fun sendData() {
+        mBinding.registrateBtn.setOnClickListener {
+            val login = mBinding.loginEt.text.toString()
+            val password = mBinding.passwordEt.text.toString()
+            Log.d(TAG, "sendData: $login $password")
+            viewModel.register(login, password)
+        }
     }
 
 

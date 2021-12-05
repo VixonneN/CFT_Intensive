@@ -9,7 +9,7 @@ class LoginRequestUseCase @Inject constructor(
     private val repository: AuthRepository
 ) {
 
-    suspend operator fun invoke(authEntity: AuthEntity) : Call<Unit> {
+    suspend operator fun invoke(authEntity: AuthEntity) : Call<String> {
         return repository.logIn(authEntity)
     }
 }

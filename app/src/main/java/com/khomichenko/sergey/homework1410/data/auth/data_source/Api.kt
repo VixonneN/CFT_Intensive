@@ -7,9 +7,9 @@ import retrofit2.http.POST
 interface Api {
 
     @POST("login")
-    fun logIn(@Body authBody: AuthBody): Call<Unit>
+    fun logIn(@Body authBody: AuthBody): Call<String>
 
     //возвращается объект
     @POST("registration")
-    fun register(@Body authBody: AuthBody): Call<Unit>
+    fun register(@Body authBody: AuthBody): Call<RegistrationResponse>
 }
