@@ -17,5 +17,14 @@
         android:id="@+id/authFragment"
         android:name="com.khomichenko.sergey.homework1410.presentation.auth_screen.fragment.AuthFragment"
         android:label="fragment_auth"
-        tools:layout="@layout/fragment_auth" />
+        tools:layout="@layout/fragment_auth" >
+        <action
+            android:id="@+id/action_authFragment_to_mainLoanFragment"
+            app:destination="@id/mainLoanFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/mainLoanFragment"
+        android:name="com.khomichenko.sergey.homework1410.presentation.main_loan_screen.fragment.MainLoanFragment"
+        android:label="fragment_main_loan"
+        tools:layout="@layout/fragment_main_loan" />
 </navigation>

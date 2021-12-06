@@ -1,7 +1,7 @@
 package com.khomichenko.sergey.homework1410.domain.repository
 
 import com.khomichenko.sergey.homework1410.data.auth.data_source.RegistrationResponse
-import com.khomichenko.sergey.homework1410.domain.entity.AuthEntity
+import com.khomichenko.sergey.homework1410.domain.entity.auth.AuthEntity
 import retrofit2.Call
 
 interface AuthRepository {

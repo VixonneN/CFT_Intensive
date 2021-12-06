@@ -6,6 +6,4 @@
     <string name="registrate">Зарегистрироваться</string>
     <string name="user_name_example">testadmin</string>
     <string name="yet_registrate">Уже зарегистрированы? Войти</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

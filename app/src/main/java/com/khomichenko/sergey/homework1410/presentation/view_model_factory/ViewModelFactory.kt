@@ -1,4 +1,4 @@
-package com.khomichenko.sergey.homework1410.presentation.auth_screen.view_models
+package com.khomichenko.sergey.homework1410.presentation.view_model_factory
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

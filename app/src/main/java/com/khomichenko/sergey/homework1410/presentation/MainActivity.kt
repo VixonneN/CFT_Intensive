@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.navigation.fragment.findNavController
 import com.khomichenko.sergey.homework1410.R
 import com.khomichenko.sergey.homework1410.databinding.ActivityMainBinding
+import com.khomichenko.sergey.homework1410.di.App
 
 class MainActivity : AppCompatActivity() {
 
@@ -15,7 +16,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(mBinding.root)
-        val navController = supportFragmentManager.findFragmentById(R.id.nav_host_fragment)?.findNavController()
+        supportFragmentManager.findFragmentById(R.id.nav_host_fragment)?.findNavController()
     }
 
     override fun onDestroy() {

@@ -1,14 +1,11 @@
 package com.khomichenko.sergey.homework1410.presentation.auth_screen.fragment
 
-import android.content.ContentValues.TAG
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.khomichenko.sergey.homework1410.R
@@ -51,6 +48,7 @@ class RegistrationFragment : Fragment() {
             val login = mBinding.loginEt.text.toString()
             val password = mBinding.passwordEt.text.toString()
             viewModel.register(login, password)
+            //todo Toolbar и переход на следующий экран при удаче
         }
     }
 
