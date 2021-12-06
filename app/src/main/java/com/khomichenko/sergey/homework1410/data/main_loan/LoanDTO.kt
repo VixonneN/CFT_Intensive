@@ -1,5 +1,6 @@
 package com.khomichenko.sergey.homework1410.data.main_loan
 
+import com.khomichenko.sergey.homework1410.domain.entity.main_loan.LoanEntity
 import java.math.BigDecimal
 
 data class LoanDTO(
@@ -12,4 +13,18 @@ data class LoanDTO(
     val period: Int,
     val phoneNumber: String,
     val state: String
-)
+) {
+    fun toLoanEntity() : LoanEntity {
+        return LoanEntity(
+            amount,
+            date,
+            firstName,
+            id,
+            lastName,
+            percent,
+            period,
+            phoneNumber,
+            state
+        )
+    }
+}

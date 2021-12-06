@@ -30,6 +30,9 @@ class RegistrationFragmentViewModel @Inject constructor(
     private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean> = _loading
 
+    private val _finish = MutableLiveData<Boolean>()
+    val finish: LiveData<Boolean> = _finish
+
     private val handler = CoroutineExceptionHandler { _, throwable ->
         Log.e("MainViewModel", "Failed to post", throwable)
     }
@@ -37,6 +40,7 @@ class RegistrationFragmentViewModel @Inject constructor(
     fun register(login: String, password: String) {
         val dataRegisterBody = AuthEntity(login, password)
         _loading.value = true
+        _finish.value = false
         viewModelScope.launch(handler + Dispatchers.IO) {
             try {
                 val response = registerRequestUseCase.invoke(dataRegisterBody).execute()
@@ -44,6 +48,7 @@ class RegistrationFragmentViewModel @Inject constructor(
                     val name = response.body()?.name
                     _resultName.value = name
                     _loading.value = false
+                    _finish.value = true
                 }
             } catch (e: IOException) {
                 Log.e("TAG", "register: $e", IOException())
@@ -58,6 +63,7 @@ class RegistrationFragmentViewModel @Inject constructor(
     fun login(login: String, password: String) {
         val dataRegisterBody = AuthEntity(login, password)
         _loading.value = true
+        _finish.value = false
         viewModelScope.launch(handler + Dispatchers.IO) {
             try {
                 val response = loginRequestUseCase.invoke(dataRegisterBody).execute()
@@ -67,6 +73,7 @@ class RegistrationFragmentViewModel @Inject constructor(
                         PreferencesProvider.preferences.saveToken(token)
                     }
                     _loading.value = false
+                    _finish.value = true
                 }
             } catch (e: IOException) {
                 Log.e("TAG", "register: $e", IOException())

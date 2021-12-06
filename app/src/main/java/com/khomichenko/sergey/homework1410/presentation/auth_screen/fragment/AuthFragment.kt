@@ -42,6 +42,15 @@ class AuthFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         getText()
+        getUserName()
+        loading()
+        navigate()
+    }
+
+    private fun getUserName() {
+        viewModel.resultName.observe(this) {
+            mBinding.loginEt.setText(it)
+        }
     }
 
     private fun getText() {
@@ -52,8 +61,24 @@ class AuthFragment : Fragment() {
         }
     }
 
-    private fun navigation(){
+    private fun loading() {
+        viewModel.loading.observe(this) { startLoading ->
+            if (startLoading) {
+                mBinding.authProgressBar.visibility = View.VISIBLE
+                mBinding.loginBtn.isEnabled = false
+            } else {
+                mBinding.authProgressBar.visibility = View.GONE
+                mBinding.loginBtn.isEnabled = true
+            }
+        }
+    }
+
+    private fun navigate() {
         val navigation = findNavController()
-        // TODO: 12/5/2021 Добавить следующий экран
+        viewModel.finish.observe(this) { finished ->
+            if (finished) {
+                navigation.navigate(R.id.action_authFragment_to_mainLoanFragment)
+            }
+        }
     }
 }

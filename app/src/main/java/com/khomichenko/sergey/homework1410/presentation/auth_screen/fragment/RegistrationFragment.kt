@@ -23,24 +23,30 @@ class RegistrationFragment : Fragment() {
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var viewModel: RegistrationFragmentViewModel
 
+    private val navController = findNavController()
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         (requireActivity().application as App).appComponent.inject(this)
         viewModel =
-            ViewModelProvider(this, viewModelFactory)[RegistrationFragmentViewModel::class.java]
+            ViewModelProvider(this,
+                viewModelFactory)[RegistrationFragmentViewModel::class.java]
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        _binding = FragmentRegistrationBinding.inflate(layoutInflater, container, false)
+        _binding = FragmentRegistrationBinding
+            .inflate(layoutInflater, container, false)
         return mBinding.root
     }
 
     override fun onStart() {
         super.onStart()
         sendData()
+        loading()
+        navigate()
     }
 
     private fun sendData() {
@@ -48,12 +54,31 @@ class RegistrationFragment : Fragment() {
             val login = mBinding.loginEt.text.toString()
             val password = mBinding.passwordEt.text.toString()
             viewModel.register(login, password)
-            //todo Toolbar и переход на следующий экран при удаче
         }
     }
 
-    private fun navigation(){
-        val navController = findNavController()
-        navController.navigate(R.id.action_registrationFragment2_to_authFragment3)
+    private fun loading() {
+        viewModel.loading.observe(this) { startLoading ->
+            if (startLoading) {
+                mBinding.authProgressBar.visibility = View.VISIBLE
+                mBinding.registrateBtn.isEnabled = false
+                mBinding.loginBtn.isEnabled = false
+            } else {
+                mBinding.authProgressBar.visibility = View.GONE
+                mBinding.registrateBtn.isEnabled = true
+                mBinding.loginBtn.isEnabled = true
+            }
+        }
+    }
+
+    private fun navigate() {
+        mBinding.loginBtn.setOnClickListener {
+            navController.navigate(R.id.action_registrationFragment_to_authFragment)
+        }
+        viewModel.finish.observe(this) { finished ->
+            if (finished) {
+                navController.navigate(R.id.action_registrationFragment_to_authFragment)
+            }
+        }
     }
 }
