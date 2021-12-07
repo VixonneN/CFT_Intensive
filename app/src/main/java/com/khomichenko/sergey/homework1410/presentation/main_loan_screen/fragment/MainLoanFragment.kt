@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.khomichenko.sergey.homework1410.R
 import com.khomichenko.sergey.homework1410.databinding.FragmentMainLoanBinding
 import com.khomichenko.sergey.homework1410.di.App
 import com.khomichenko.sergey.homework1410.presentation.main_loan_screen.fragment.recycler_view.MainLoanAdapter
@@ -59,12 +60,12 @@ class MainLoanFragment : Fragment() {
             }
             adapter = loanAdapter
         }
-
     }
 
     private fun floatingButton() {
         mBinding.addLoanBtn.setOnClickListener {
-//            navigation.navigate()
+            val navigation = findNavController()
+            navigation.navigate(R.id.action_mainLoanFragment_to_addNewLoanFragment)
         }
     }
 }

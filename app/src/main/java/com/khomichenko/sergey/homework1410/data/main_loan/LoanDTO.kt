@@ -14,6 +14,7 @@ data class LoanDTO(
     val phoneNumber: String,
     val state: String
 ) {
+
     fun toLoanEntity() : LoanEntity {
         return LoanEntity(
             amount,

@@ -6,4 +6,14 @@
     <string name="registrate">Зарегистрироваться</string>
     <string name="user_name_example">testadmin</string>
     <string name="yet_registrate">Уже зарегистрированы? Войти</string>
+    <string name="enter_last_name">Введите фамилию</string>
+    <string name="enter_first_name">Введите имя</string>
+    <string name="ivanov">Иванов</string>
+    <string name="ivan">Иван</string>
+    <string name="amount">Сумма</string>
+    <string name="percent">Процент</string>
+    <string name="mobile_number">Номер мобильного телефона</string>
+    <string name="period">Период</string>
+    <string name="send">Отправить</string>
+    <string name="percent_example">10%</string>
 </resources>

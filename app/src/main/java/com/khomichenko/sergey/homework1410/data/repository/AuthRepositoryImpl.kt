@@ -1,4 +1,4 @@
-package com.khomichenko.sergey.homework1410.data.auth.repository
+package com.khomichenko.sergey.homework1410.data.repository
 
 import com.khomichenko.sergey.homework1410.data.data_source.Api
 import com.khomichenko.sergey.homework1410.data.auth.data_source.RegistrationResponse
