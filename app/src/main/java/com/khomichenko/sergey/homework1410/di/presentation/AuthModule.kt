@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.khomichenko.sergey.homework1410.presentation.add_new_loan_screen.view_model.AddNewLoanFragmentViewModel
 import com.khomichenko.sergey.homework1410.presentation.auth_screen.view_models.RegistrationFragmentViewModel
+import com.khomichenko.sergey.homework1410.presentation.loan_information.view_model.LoanInformationViewModel
 import com.khomichenko.sergey.homework1410.presentation.main_loan_screen.view_models.MainLoanFragmentViewModel
 import com.khomichenko.sergey.homework1410.presentation.view_model_factory.ViewModelFactory
 import dagger.Binds
@@ -37,4 +38,9 @@ interface AuthModule {
     @ViewModelKey(AddNewLoanFragmentViewModel::class)
     fun bindAddNewLoanViewModel(viewModel: AddNewLoanFragmentViewModel) : ViewModel
 
+    @Binds
+    @IntoMap
+    @Singleton
+    @ViewModelKey(LoanInformationViewModel::class)
+    fun bindLoanInformationViewModel(viewModel: LoanInformationViewModel) : ViewModel
 }

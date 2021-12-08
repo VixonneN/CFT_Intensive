@@ -7,7 +7,7 @@ import com.khomichenko.sergey.homework1410.databinding.LoanItemBinding
 import com.khomichenko.sergey.homework1410.domain.entity.main_loan.LoanEntity
 
 class MainLoanAdapter(
-    private val onViewClickListener:() -> Unit
+    private val onViewClickListener:(Int) -> Unit
 ) : RecyclerView.Adapter<MainLoanViewHolder>() {
 
     var loanList = emptyList<LoanEntity>()

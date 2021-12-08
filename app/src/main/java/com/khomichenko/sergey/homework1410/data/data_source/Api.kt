@@ -9,6 +9,7 @@ import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface Api {
 
@@ -26,4 +27,7 @@ interface Api {
 
     @GET("loans/conditions")
     fun getConditions() : Call<ConditionsDTO>
+
+    @GET("loans/{id}")
+    fun getLoanInformation(@Path("id") id: Int) :Call<LoanDTO>
 }

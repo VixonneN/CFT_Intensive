@@ -16,4 +16,5 @@
     <string name="period">Период</string>
     <string name="send">Отправить</string>
     <string name="percent_example">10%</string>
+    <string name="hint_number">1234567890</string>
 </resources>

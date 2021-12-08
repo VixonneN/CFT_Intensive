@@ -33,6 +33,9 @@ class RegistrationFragmentViewModel @Inject constructor(
     private val _finish = MutableLiveData<Boolean>()
     val finish: LiveData<Boolean> = _finish
 
+    private val _exception = MutableLiveData<String>()
+    val exception: LiveData<String> = _exception
+
     private val handler = CoroutineExceptionHandler { _, throwable ->
         Log.e("MainViewModel", "Failed to post", throwable)
     }
@@ -76,11 +79,15 @@ class RegistrationFragmentViewModel @Inject constructor(
                     _finish.value = true
                 }
             } catch (e: IOException) {
-                Log.e("TAG", "register: $e", IOException())
-                _loading.value = false
+                withContext(Dispatchers.Main) {
+                    _exception.value = "Произошла какая-то ошибка, попробуйте ещё раз"
+                    _loading.value = false
+                }
             } catch (e: HttpException) {
-                Log.e("TAG", "register: $e")
-                _loading.value = false
+                withContext(Dispatchers.Main) {
+                    _exception.value = "Ошибка соединения, попробуйте позже"
+                    _loading.value = false
+                }
             }
         }
     }

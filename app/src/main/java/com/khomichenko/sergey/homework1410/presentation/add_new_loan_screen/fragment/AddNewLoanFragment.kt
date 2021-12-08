@@ -53,6 +53,7 @@ class AddNewLoanFragment : Fragment() {
         }
     }
 
+    //TODO добавить прогрессбар и возможность перехода после загрузки на прошлый экран
     override fun onStart() {
         super.onStart()
 

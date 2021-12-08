@@ -5,7 +5,7 @@ import com.khomichenko.sergey.homework1410.databinding.LoanItemBinding
 import com.khomichenko.sergey.homework1410.domain.entity.main_loan.LoanEntity
 
 class MainLoanViewHolder(private val binding: LoanItemBinding,
-private val onViewClickListener:() -> Unit)
+private val onViewClickListener:(Int) -> Unit)
     : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(model: LoanEntity) {
@@ -15,7 +15,7 @@ private val onViewClickListener:() -> Unit)
         binding.loanAmountTv.text = String.format(model.amount.toString())
 
         binding.itemContainer.setOnClickListener {
-            onViewClickListener()
+            onViewClickListener(model.id)
         }
     }
 }

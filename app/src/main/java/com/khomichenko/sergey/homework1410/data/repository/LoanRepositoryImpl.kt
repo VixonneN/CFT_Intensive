@@ -24,4 +24,7 @@ class LoanRepositoryImpl @Inject constructor(
 
     override suspend fun getConditions(): Call<ConditionsDTO> =
         api.getConditions()
+
+    override suspend fun getLoanInformation(id: Int): Call<LoanDTO> =
+        api.getLoanInformation(id)
 }

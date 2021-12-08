@@ -28,8 +28,13 @@ class AddNewLoanFragmentViewModel @Inject constructor(
     private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean> = _loading
 
+    //условия
     private val _conditions = MutableLiveData<ConditionsEntity>()
     val conditions: LiveData<ConditionsEntity> = _conditions
+
+    //сообщение об ошибках TODO добавить обработку
+    private val _exception = MutableLiveData<String>()
+    val exception: LiveData<String> = _exception
 
     private val handler = CoroutineExceptionHandler { _, throwable ->
         Log.e("MainViewModel", "Failed to post", throwable)
@@ -57,12 +62,15 @@ class AddNewLoanFragmentViewModel @Inject constructor(
                     _loading.value = false
                 }
             } catch (e: IOException) {
-                Log.e("IOException", "getAllLoans: $e")
-                _loading.value = false
-
+                withContext(Dispatchers.Main) {
+                    Log.e("IOException", "getAllLoans: $e")
+                    _loading.value = false
+                }
             } catch (e: HttpException) {
-                Log.e("HttpException", "getAllLoans: $e")
-                _loading.value = false
+                withContext(Dispatchers.Main) {
+                    _exception.value = "Ошибка соединения, попробуйте позже"
+                    _loading.value = false
+                }
             }
         }
     }
@@ -77,12 +85,15 @@ class AddNewLoanFragmentViewModel @Inject constructor(
                     _loading.value = false
                 }
             } catch (e: IOException) {
-                Log.e("IOException", "getAllLoans: $e")
-                _loading.value = false
-
+                withContext(Dispatchers.Main) {
+                    Log.e("IOException", "getAllLoans: $e")
+                    _loading.value = false
+                }
             } catch (e: HttpException) {
-                Log.e("HttpException", "getAllLoans: $e")
-                _loading.value = false
+                withContext(Dispatchers.Main) {
+                    _exception.value = "Ошибка соединения, попробуйте позже"
+                    _loading.value = false
+                }
             }
         }
     }

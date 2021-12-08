@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.khomichenko.sergey.homework1410.R
 import com.khomichenko.sergey.homework1410.databinding.FragmentMainLoanBinding
@@ -51,8 +52,10 @@ class MainLoanFragment : Fragment() {
     private fun addDataRecycler(){
         mBinding.loanRecyclerView.apply {
             val loanAdapter = MainLoanAdapter(
-                onViewClickListener = {
-                    Toast.makeText(context, "bnt_adapter", Toast.LENGTH_SHORT).show()
+                onViewClickListener = { id ->
+                    val idBundle = Bundle()
+                    idBundle.putInt("id_loan", id)
+                    navigation().navigate(R.id.action_mainLoanFragment_to_loanInformationFragment, idBundle)
                 }
             )
             viewModel.allLoans.observe(this@MainLoanFragment) {
@@ -64,8 +67,10 @@ class MainLoanFragment : Fragment() {
 
     private fun floatingButton() {
         mBinding.addLoanBtn.setOnClickListener {
-            val navigation = findNavController()
-            navigation.navigate(R.id.action_mainLoanFragment_to_addNewLoanFragment)
+            navigation().navigate(R.id.action_mainLoanFragment_to_addNewLoanFragment)
         }
     }
+
+    private fun navigation() : NavController =
+        findNavController()
 }
