@@ -8,7 +8,6 @@ import androidx.lifecycle.viewModelScope
 import com.khomichenko.sergey.homework1410.data.auth.auth_token.PreferencesProvider
 import com.khomichenko.sergey.homework1410.domain.entity.auth.AuthEntity
 import com.khomichenko.sergey.homework1410.domain.usecase.LoginRequestUseCase
-import com.khomichenko.sergey.homework1410.domain.usecase.RegisterRequestUseCase
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -36,31 +35,38 @@ class AuthFragmentViewModel @Inject constructor(
     }
 
     fun login(login: String, password: String) {
-        val dataRegisterBody = AuthEntity(login, password)
-        _loading.value = true
-        _finish.value = false
-        viewModelScope.launch(handler + Dispatchers.IO) {
-            try {
-                val response = loginRequestUseCase.invoke(dataRegisterBody).execute()
-                withContext(Dispatchers.Main) {
-                    if (response.code() == 200 || response.code() == 201) {
-                        val token = response.body()
-                        if (token != null) {
-                            PreferencesProvider.preferences.saveToken(token)
+        if (login == "" || password == "") {
+            _exception.value = " Введите корректные значения"
+        } else {
+            val dataRegisterBody = AuthEntity(login, password)
+            _loading.value = true
+            _finish.value = false
+            viewModelScope.launch(handler + Dispatchers.IO) {
+                try {
+                    val response = loginRequestUseCase.invoke(dataRegisterBody).execute()
+                    withContext(Dispatchers.Main) {
+                        if (response.code() == 200 || response.code() == 201) {
+                            val token = response.body()
+                            if (token != null) {
+                                PreferencesProvider.preferences.saveToken(token)
+                            }
+                            _loading.value = false
+                            _finish.value = true
+                        } else if (response.code() == 404) {
+                            _exception.value = "Пользователь не найден"
+                            _loading.value = false
                         }
-                        _loading.value = false
-                        _finish.value = true
                     }
-                }
-            } catch (e: IOException) {
-                withContext(Dispatchers.Main) {
-                    _exception.value = "Произошла какая-то ошибка, попробуйте ещё раз"
-                    _loading.value = false
-                }
-            } catch (e: HttpException) {
-                withContext(Dispatchers.Main) {
-                    _exception.value = "Ошибка соединения, попробуйте позже"
-                    _loading.value = false
+                } catch (e: IOException) {
+                    withContext(Dispatchers.Main) {
+                        _exception.value = "Произошла какая-то ошибка, попробуйте ещё раз"
+                        _loading.value = false
+                    }
+                } catch (e: HttpException) {
+                    withContext(Dispatchers.Main) {
+                        _exception.value = "Ошибка соединения, попробуйте позже"
+                        _loading.value = false
+                    }
                 }
             }
         }

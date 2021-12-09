@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.khomichenko.sergey.homework1410.R
@@ -48,11 +49,17 @@ class AuthFragment : Fragment() {
         getUserName()
         loading()
         navigate()
+        exceptionHandling()
     }
 
     private fun getUserName() {
         mBinding.loginEt.setText(registeredName)
+    }
 
+    private fun exceptionHandling(){
+        viewModel.exception.observe(this) { exception ->
+            Toast.makeText(context, exception, Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun getText() {
