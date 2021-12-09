@@ -25,7 +25,6 @@ class RegistrationFragment : Fragment() {
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var viewModel: RegistrationFragmentViewModel
 
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
         (requireActivity().application as App).appComponent.inject(this)
@@ -51,7 +50,6 @@ class RegistrationFragment : Fragment() {
         exceptionHandling()
     }
 
-    //TODO проверка на пустоту
     private fun sendData() {
         mBinding.registrateBtnReg.setOnClickListener {
             val login = mBinding.loginEt.text.toString()
@@ -74,8 +72,8 @@ class RegistrationFragment : Fragment() {
         }
     }
 
-    private fun exceptionHandling(){
-        viewModel.exception.observe(this){ exception ->
+    private fun exceptionHandling() {
+        viewModel.exception.observe(this) { exception ->
             Toast.makeText(context, exception, Toast.LENGTH_SHORT).show()
         }
     }
@@ -95,6 +93,6 @@ class RegistrationFragment : Fragment() {
         }
     }
 
-    private fun navigation() : NavController =
+    private fun navigation(): NavController =
         findNavController()
 }
