@@ -6,7 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.khomichenko.sergey.homework1410.R
 import com.khomichenko.sergey.homework1410.databinding.FragmentRegistrationBinding
@@ -23,7 +25,6 @@ class RegistrationFragment : Fragment() {
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var viewModel: RegistrationFragmentViewModel
 
-    private val navController = findNavController()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -47,10 +48,12 @@ class RegistrationFragment : Fragment() {
         sendData()
         loading()
         navigate()
+        exceptionHandling()
     }
 
+    //TODO проверка на пустоту
     private fun sendData() {
-        mBinding.registrateBtn.setOnClickListener {
+        mBinding.registrateBtnReg.setOnClickListener {
             val login = mBinding.loginEt.text.toString()
             val password = mBinding.passwordEt.text.toString()
             viewModel.register(login, password)
@@ -61,24 +64,37 @@ class RegistrationFragment : Fragment() {
         viewModel.loading.observe(this) { startLoading ->
             if (startLoading) {
                 mBinding.authProgressBar.visibility = View.VISIBLE
-                mBinding.registrateBtn.isEnabled = false
-                mBinding.loginBtn.isEnabled = false
+                mBinding.registrateBtnReg.isEnabled = false
+                mBinding.loginBtnReg.isEnabled = false
             } else {
                 mBinding.authProgressBar.visibility = View.GONE
-                mBinding.registrateBtn.isEnabled = true
-                mBinding.loginBtn.isEnabled = true
+                mBinding.registrateBtnReg.isEnabled = true
+                mBinding.loginBtnReg.isEnabled = true
             }
         }
     }
 
+    private fun exceptionHandling(){
+        viewModel.exception.observe(this){ exception ->
+            Toast.makeText(context, exception, Toast.LENGTH_SHORT).show()
+        }
+    }
+
     private fun navigate() {
-        mBinding.loginBtn.setOnClickListener {
-            navController.navigate(R.id.action_registrationFragment_to_authFragment)
+        mBinding.loginBtnReg.setOnClickListener {
+            navigation().navigate(R.id.action_registrationFragment_to_authFragment)
         }
         viewModel.finish.observe(this) { finished ->
             if (finished) {
-                navController.navigate(R.id.action_registrationFragment_to_authFragment)
+                val bundle = Bundle()
+                viewModel.resultName.observe(this) { name ->
+                    bundle.putString("result_name", name)
+                }
+                navigation().navigate(R.id.action_registrationFragment_to_authFragment, bundle)
             }
         }
     }
+
+    private fun navigation() : NavController =
+        findNavController()
 }

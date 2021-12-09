@@ -17,13 +17,9 @@ import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject
 
-class RegistrationFragmentViewModel @Inject constructor(
-    private val registerRequestUseCase: RegisterRequestUseCase,
+class AuthFragmentViewModel @Inject constructor(
+    private val loginRequestUseCase: LoginRequestUseCase,
 ) : ViewModel() {
-
-    //Имя, указанное при регистрации
-    private val _resultName = MutableLiveData<String>()
-    val resultName: LiveData<String> = _resultName
 
     //загрузка
     private val _loading = MutableLiveData<Boolean>()
@@ -39,34 +35,34 @@ class RegistrationFragmentViewModel @Inject constructor(
         Log.e("MainViewModel", "Failed to post", throwable)
     }
 
-    fun register(login: String, password: String) {
+    fun login(login: String, password: String) {
         val dataRegisterBody = AuthEntity(login, password)
         _loading.value = true
         _finish.value = false
         viewModelScope.launch(handler + Dispatchers.IO) {
             try {
-                val response = registerRequestUseCase.invoke(dataRegisterBody).execute()
+                val response = loginRequestUseCase.invoke(dataRegisterBody).execute()
                 withContext(Dispatchers.Main) {
                     if (response.code() == 200 || response.code() == 201) {
-                        val name = response.body()?.name
-                        _resultName.value = name
+                        val token = response.body()
+                        if (token != null) {
+                            PreferencesProvider.preferences.saveToken(token)
+                        }
                         _loading.value = false
                         _finish.value = true
-                    } else if (response.code() == 400) {
-                        _exception.value = "Пользователь уже существует"
-                        _loading.value = false
                     }
                 }
             } catch (e: IOException) {
-                _loading.value = false
-                _exception.value = "Произошла какая-то ошибка, попробуйте ещё раз"
+                withContext(Dispatchers.Main) {
+                    _exception.value = "Произошла какая-то ошибка, попробуйте ещё раз"
+                    _loading.value = false
+                }
             } catch (e: HttpException) {
-                _loading.value = false
-                _exception.value = "Ошибка соединения, попробуйте позже"
+                withContext(Dispatchers.Main) {
+                    _exception.value = "Ошибка соединения, попробуйте позже"
+                    _loading.value = false
+                }
             }
         }
     }
-
-
-
 }

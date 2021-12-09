@@ -12,6 +12,7 @@ import com.khomichenko.sergey.homework1410.R
 import com.khomichenko.sergey.homework1410.databinding.FragmentAuthBinding
 import com.khomichenko.sergey.homework1410.databinding.FragmentRegistrationBinding
 import com.khomichenko.sergey.homework1410.di.App
+import com.khomichenko.sergey.homework1410.presentation.auth_screen.view_models.AuthFragmentViewModel
 import com.khomichenko.sergey.homework1410.presentation.auth_screen.view_models.RegistrationFragmentViewModel
 import javax.inject.Inject
 
@@ -22,13 +23,14 @@ class AuthFragment : Fragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    private lateinit var viewModel: RegistrationFragmentViewModel
+    private lateinit var viewModel: AuthFragmentViewModel
+    private var registeredName: String? = ""
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         (requireActivity().application as App).appComponent.inject(this)
         viewModel =
-            ViewModelProvider(this, viewModelFactory)[RegistrationFragmentViewModel::class.java]
+            ViewModelProvider(this, viewModelFactory)[AuthFragmentViewModel::class.java]
     }
 
     override fun onCreateView(
@@ -36,6 +38,7 @@ class AuthFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentAuthBinding.inflate(layoutInflater, container, false)
+        registeredName = arguments?.getString("result_name")
         return mBinding.root
     }
 
@@ -48,13 +51,12 @@ class AuthFragment : Fragment() {
     }
 
     private fun getUserName() {
-        viewModel.resultName.observe(this) {
-            mBinding.loginEt.setText(it)
-        }
+        mBinding.loginEt.setText(registeredName)
+
     }
 
     private fun getText() {
-        mBinding.loginBtn.setOnClickListener {
+        mBinding.loginBtnAuth.setOnClickListener {
             val login = mBinding.loginEt.text.toString()
             val password = mBinding.passwordEt.text.toString()
             viewModel.login(login, password)
@@ -65,10 +67,10 @@ class AuthFragment : Fragment() {
         viewModel.loading.observe(this) { startLoading ->
             if (startLoading) {
                 mBinding.authProgressBar.visibility = View.VISIBLE
-                mBinding.loginBtn.isEnabled = false
+                mBinding.loginBtnAuth.isEnabled = false
             } else {
                 mBinding.authProgressBar.visibility = View.GONE
-                mBinding.loginBtn.isEnabled = true
+                mBinding.loginBtnAuth.isEnabled = true
             }
         }
     }

@@ -3,6 +3,7 @@ package com.khomichenko.sergey.homework1410.di.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.khomichenko.sergey.homework1410.presentation.add_new_loan_screen.view_model.AddNewLoanFragmentViewModel
+import com.khomichenko.sergey.homework1410.presentation.auth_screen.view_models.AuthFragmentViewModel
 import com.khomichenko.sergey.homework1410.presentation.auth_screen.view_models.RegistrationFragmentViewModel
 import com.khomichenko.sergey.homework1410.presentation.loan_information.view_model.LoanInformationViewModel
 import com.khomichenko.sergey.homework1410.presentation.main_loan_screen.view_models.MainLoanFragmentViewModel
@@ -43,4 +44,11 @@ interface AuthModule {
     @Singleton
     @ViewModelKey(LoanInformationViewModel::class)
     fun bindLoanInformationViewModel(viewModel: LoanInformationViewModel) : ViewModel
+
+
+    @Binds
+    @IntoMap
+    @Singleton
+    @ViewModelKey(AuthFragmentViewModel::class)
+    fun bindAuthViewModel(viewModel: AuthFragmentViewModel) : ViewModel
 }
