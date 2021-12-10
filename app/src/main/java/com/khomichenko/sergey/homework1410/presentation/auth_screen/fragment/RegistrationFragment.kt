@@ -11,9 +11,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.khomichenko.sergey.homework1410.R
+import com.khomichenko.sergey.homework1410.data.auth.auth_token.Preferences
+import com.khomichenko.sergey.homework1410.data.auth.auth_token.PreferencesProvider
 import com.khomichenko.sergey.homework1410.databinding.FragmentRegistrationBinding
 import com.khomichenko.sergey.homework1410.di.App
+import com.khomichenko.sergey.homework1410.presentation.MainActivity
 import com.khomichenko.sergey.homework1410.presentation.auth_screen.view_models.RegistrationFragmentViewModel
+import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
 class RegistrationFragment : Fragment() {
@@ -44,10 +48,23 @@ class RegistrationFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        sendData()
-        loading()
-        navigate()
-        exceptionHandling()
+
+        if (PreferencesProvider.preferences.getInitUser() &&
+            PreferencesProvider.preferences.savedToken.isNotEmpty()) {
+
+            navigation().navigate(R.id.action_registrationFragment_to_mainLoanFragment)
+        } else {
+            deleteData()
+            sendData()
+            loading()
+            navigate()
+            exceptionHandling()
+        }
+    }
+
+    private fun deleteData() {
+        PreferencesProvider.preferences.deleteToken("ACCESS_TOKEN_KEY")
+        PreferencesProvider.preferences.setInitUser(false)
     }
 
     private fun sendData() {
@@ -95,4 +112,9 @@ class RegistrationFragment : Fragment() {
 
     private fun navigation(): NavController =
         findNavController()
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
 }

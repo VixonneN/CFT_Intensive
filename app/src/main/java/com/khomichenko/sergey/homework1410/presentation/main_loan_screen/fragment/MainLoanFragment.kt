@@ -2,15 +2,14 @@ package com.khomichenko.sergey.homework1410.presentation.main_loan_screen.fragme
 
 import android.content.Context
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.khomichenko.sergey.homework1410.R
+import com.khomichenko.sergey.homework1410.data.auth.auth_token.PreferencesProvider
 import com.khomichenko.sergey.homework1410.databinding.FragmentMainLoanBinding
 import com.khomichenko.sergey.homework1410.di.App
 import com.khomichenko.sergey.homework1410.presentation.main_loan_screen.fragment.recycler_view.MainLoanAdapter
@@ -32,6 +31,7 @@ class MainLoanFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentMainLoanBinding.inflate(layoutInflater, container, false)
+        setHasOptionsMenu(true)
         return mBinding.root
     }
 
@@ -47,6 +47,24 @@ class MainLoanFragment : Fragment() {
         viewModel.getAllLoans()
         floatingButton()
         addDataRecycler()
+        exceptionHandling()
+        showProgressBar()
+    }
+
+    private fun exceptionHandling() {
+        viewModel.exception.observe(this) { exception ->
+            Toast.makeText(context, exception, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun showProgressBar() {
+        viewModel.loading.observe(this) { loading ->
+            if (loading) {
+                mBinding.mainProgressBar.visibility = View.VISIBLE
+            } else {
+                mBinding.mainProgressBar.visibility = View.GONE
+            }
+        }
     }
 
     private fun addDataRecycler(){
@@ -63,6 +81,26 @@ class MainLoanFragment : Fragment() {
             }
             adapter = loanAdapter
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.exit_btn, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.btn_exit -> {
+                PreferencesProvider.preferences.deleteToken("ACCESS_TOKEN_KEY")
+                PreferencesProvider.preferences.setInitUser(false)
+                navigation().navigate(R.id.action_mainLoanFragment_to_registrationFragment)
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 
     private fun floatingButton() {

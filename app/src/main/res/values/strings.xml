@@ -17,4 +17,10 @@
     <string name="send">Отправить</string>
     <string name="percent_example">10%</string>
     <string name="hint_number">1234567890</string>
+    <string name="last_name">Фамилия</string>
+    <string name="first_name">Имя</string>
+    <string name="telephone_number">Номер телефона</string>
+    <string name="loan_amount">Сумма займа</string>
+    <string name="status_loan">Статус займа</string>
+    <string name="toolbar">Займы онлайн</string>
 </resources>

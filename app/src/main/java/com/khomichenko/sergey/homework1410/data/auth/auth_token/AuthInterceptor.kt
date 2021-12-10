@@ -12,7 +12,7 @@ class AuthInterceptor : Interceptor {
         val token = PreferencesProvider.preferences.savedToken
         if (!TextUtils.isEmpty(token)) {
             val authenticatedRequest = request.newBuilder()
-                .header("Authorization", "$token").build()
+                .header("Authorization", token).build()
             return chain.proceed(authenticatedRequest)
         }
         return chain.proceed(request)

@@ -24,6 +24,9 @@ class AddNewLoanFragmentViewModel @Inject constructor(
     private val getConditionsUseCase: GetConditionsUseCase,
 ) : ViewModel() {
 
+    private val _finished = MutableLiveData<Boolean>()
+    val finished: LiveData<Boolean> = _finished
+
     //загрузка
     private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean> = _loading
@@ -51,6 +54,7 @@ class AddNewLoanFragmentViewModel @Inject constructor(
         period: Int,
         number: String,
     ) {
+        _finished.value = false
         _loading.value = true
         val createLoanEntity =
             CreateLoanEntity(amount, firstName, lastName, percent, period, number)
@@ -60,6 +64,7 @@ class AddNewLoanFragmentViewModel @Inject constructor(
                 withContext(Dispatchers.Main) {
                     _loan.value = response.body()?.toLoanEntity()
                     _loading.value = false
+                    _finished.value = true
                 }
             } catch (e: IOException) {
                 withContext(Dispatchers.Main) {

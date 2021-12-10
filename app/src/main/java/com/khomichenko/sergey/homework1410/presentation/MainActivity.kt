@@ -2,6 +2,7 @@ package com.khomichenko.sergey.homework1410.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.widget.Toolbar
 import androidx.navigation.fragment.findNavController
 import com.khomichenko.sergey.homework1410.R
 import com.khomichenko.sergey.homework1410.databinding.ActivityMainBinding
@@ -17,6 +18,9 @@ class MainActivity : AppCompatActivity() {
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(mBinding.root)
         supportFragmentManager.findFragmentById(R.id.nav_host_fragment)?.findNavController()
+        val toolbar = mBinding.toolbar
+        setSupportActionBar(toolbar)
+        title = getString(R.string.toolbar)
     }
 
     override fun onDestroy() {

@@ -2,22 +2,17 @@ package com.khomichenko.sergey.homework1410.presentation.add_new_loan_screen.fra
 
 import android.content.Context
 import android.os.Bundle
-import android.telephony.PhoneNumberFormattingTextWatcher
-import android.text.TextWatcher
 import android.util.Log
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import com.khomichenko.sergey.homework1410.R
+import com.khomichenko.sergey.homework1410.data.auth.auth_token.PreferencesProvider
 import com.khomichenko.sergey.homework1410.databinding.FragmentAddNewLoanBinding
 import com.khomichenko.sergey.homework1410.di.App
-import com.khomichenko.sergey.homework1410.domain.entity.main_loan.CreateLoanEntity
-import com.khomichenko.sergey.homework1410.domain.entity.main_loan.LoanEntity
 import com.khomichenko.sergey.homework1410.presentation.add_new_loan_screen.view_model.AddNewLoanFragmentViewModel
-import com.khomichenko.sergey.homework1410.presentation.main_loan_screen.view_models.MainLoanFragmentViewModel
 import javax.inject.Inject
 
 class AddNewLoanFragment : Fragment() {
@@ -34,6 +29,7 @@ class AddNewLoanFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentAddNewLoanBinding.inflate(layoutInflater, container, false)
+        setHasOptionsMenu(true)
         return mBinding.root
     }
 
@@ -53,7 +49,6 @@ class AddNewLoanFragment : Fragment() {
         }
     }
 
-    //TODO добавить прогрессбар и возможность перехода после загрузки на прошлый экран
     override fun onStart() {
         super.onStart()
 
@@ -65,6 +60,20 @@ class AddNewLoanFragment : Fragment() {
             }
         }
 
+        showProgressBar()
+        navigate()
+    }
+
+    private fun showProgressBar(){
+        viewModel.loading.observe(this) { startLoading ->
+            if (startLoading) {
+                mBinding.addLoanProgressBar.visibility = View.VISIBLE
+                mBinding.sendBtn.isEnabled = false
+            } else {
+                mBinding.addLoanProgressBar.visibility = View.GONE
+                mBinding.sendBtn.isEnabled = true
+            }
+        }
     }
 
     private fun getData() {
@@ -76,6 +85,32 @@ class AddNewLoanFragment : Fragment() {
         val number = mBinding.mobileNumberEt.text.toString()
         viewModel.addLoan(amount, firstname, lastname, percent, period, number)
     }
+
+    private fun navigate() {
+        viewModel.finished.observe(this) { finished ->
+            if (finished) {
+                navController().navigate(R.id.action_addNewLoanFragment_to_mainLoanFragment)
+            }
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.exit_btn, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.btn_exit -> {
+                PreferencesProvider.preferences.deleteToken("ACCESS_TOKEN_KEY")
+                PreferencesProvider.preferences.setInitUser(false)
+                navController().navigate(R.id.action_addNewLoanFragment_to_registrationFragment)
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun navController() : NavController =
+        findNavController()
 
     override fun onDestroy() {
         super.onDestroy()

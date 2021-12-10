@@ -49,19 +49,24 @@ class AuthFragmentViewModel @Inject constructor(
                             val token = response.body()
                             if (token != null) {
                                 PreferencesProvider.preferences.saveToken(token)
+                                PreferencesProvider.preferences.setInitUser(true)
                             }
                             _loading.value = false
                             _finish.value = true
                         } else if (response.code() == 404) {
                             _exception.value = "Пользователь не найден"
                             _loading.value = false
+                        } else if (response.code() == 403) {
+                            _exception.value = "Что-то пошло не так, попробуйте позже"
                         }
                     }
+
                 } catch (e: IOException) {
                     withContext(Dispatchers.Main) {
                         _exception.value = "Произошла какая-то ошибка, попробуйте ещё раз"
                         _loading.value = false
                     }
+
                 } catch (e: HttpException) {
                     withContext(Dispatchers.Main) {
                         _exception.value = "Ошибка соединения, попробуйте позже"
