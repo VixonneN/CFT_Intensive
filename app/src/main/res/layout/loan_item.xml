@@ -5,10 +5,10 @@
     android:id="@+id/item_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="8dp"
-    android:layout_marginTop="8dp"
-    android:layout_marginEnd="8dp"
-    android:layout_marginBottom="10dp"
+    android:layout_marginStart="@dimen/margin_8dp"
+    android:layout_marginTop="@dimen/margin_8dp"
+    android:layout_marginEnd="@dimen/margin_8dp"
+    android:layout_marginBottom="@dimen/margin_10dp"
     >
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -20,12 +20,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="@tools:sample/date/ddmmyy"
-            android:layout_marginTop="4dp"
-            android:layout_marginStart="4dp"
+            android:layout_marginTop="@dimen/margin_4dp"
+            android:layout_marginStart="@dimen/margin_4dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:textColor="@color/black"
-            android:textSize="14sp"
+            android:textSize="@dimen/text_size14"
             />
 
         <TextView
@@ -33,9 +33,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="@tools:sample/full_names"
-            android:textSize="20sp"
-            android:layout_marginTop="8dp"
-            android:layout_marginStart="8dp"
+            android:textSize="@dimen/text_size_20"
+            android:layout_marginTop="@dimen/margin_8dp"
+            android:layout_marginStart="@dimen/margin_8dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/date_loan_tv"
             android:textColor="@color/black"
@@ -48,11 +48,11 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/fio_loaner_tv"
             tools:text="@tools:sample/cities"
-            android:textSize="14sp"
+            android:textSize="@dimen/text_size14"
             android:textColor="@color/black"
-            android:layout_marginTop="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginTop="@dimen/margin_8dp"
+            android:layout_marginStart="@dimen/margin_8dp"
+            android:layout_marginBottom="@dimen/margin_8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             />
 
@@ -64,9 +64,9 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             tools:text="@tools:sample/us_zipcodes"
-            android:textSize="24sp"
+            android:textSize="@dimen/text_size_24"
             android:textColor="@color/green"
-            android:layout_marginEnd="10dp"
+            android:layout_marginEnd="@dimen/margin_10dp"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -25,8 +25,8 @@
         android:focusable="true"
         android:src="@drawable/ic_baseline_add_24"
         tools:ignore="ContentDescription"
-        android:layout_marginBottom="10dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="@dimen/margin_10dp"
+        android:layout_marginEnd="@dimen/margin_10dp"
         />
 
     <ProgressBar

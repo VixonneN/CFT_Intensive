@@ -20,16 +20,16 @@
             android:layout_height="wrap_content"
             android:text="@string/user_name"
             android:textColor="@color/black"
-            android:textSize="20sp"
+            android:textSize="@dimen/text_size_20"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
             android:id="@+id/login_et"
-            android:layout_width="250dp"
+            android:layout_width="@dimen/auth_width"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="@dimen/auth_margin_top"
             android:hint="@string/user_name_example"
             android:importantForAutofill="no"
             android:inputType="text"
@@ -41,19 +41,19 @@
             android:id="@+id/password_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="@dimen/auth_margin_top"
             android:text="@string/user_password"
             android:textColor="@color/black"
-            android:textSize="20sp"
+            android:textSize="@dimen/text_size_20"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/login_et" />
 
         <EditText
             android:id="@+id/password_et"
-            android:layout_width="250dp"
+            android:layout_width="@dimen/auth_width"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="@dimen/auth_margin_top"
             android:hint="@string/user_password"
             android:importantForAutofill="no"
             android:inputType="textPassword"
@@ -63,9 +63,9 @@
 
         <Button
             android:id="@+id/login_btn_auth"
-            android:layout_width="250dp"
+            android:layout_width="@dimen/auth_width"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="@dimen/auth_margin_top"
             android:text="@string/login"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

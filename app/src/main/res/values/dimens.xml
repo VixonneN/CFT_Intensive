@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="zero_dp">0dp</dimen>
+    <dimen name="textSize18">18sp</dimen>
+    <dimen name="auth_margin_top">16dp</dimen>
+    <dimen name="text_size_20">20sp</dimen>
+    <dimen name="auth_width">250dp</dimen>
+    <dimen name="margin_end_20dp">20dp</dimen>
+    <dimen name="margin_10dp">10dp</dimen>
+    <dimen name="margin_8dp">8dp</dimen>
+    <dimen name="text_size_24">24sp</dimen>
+    <dimen name="margin_4dp">4dp</dimen>
+    <dimen name="text_size14">14sp</dimen>
+</resources>

@@ -9,11 +9,11 @@
 
     <TextView
         android:id="@+id/last_name_tv"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/zero_dp"
         android:layout_height="wrap_content"
         android:text="@string/enter_last_name"
         android:textColor="@color/black"
-        android:textSize="18sp"
+        android:textSize="@dimen/textSize18"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toStartOf="@id/first_name_tv"
@@ -21,7 +21,7 @@
 
     <EditText
         android:id="@+id/last_name_et"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/zero_dp"
         android:layout_height="wrap_content"
         android:inputType="text"
         app:layout_constraintStart_toStartOf="parent"
@@ -32,18 +32,18 @@
 
     <TextView
         android:id="@+id/first_name_tv"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/zero_dp"
         android:layout_height="wrap_content"
         android:text="@string/enter_first_name"
         android:textColor="@color/black"
-        android:textSize="18sp"
+        android:textSize="@dimen/textSize18"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@id/last_name_tv"/>
 
     <EditText
         android:id="@+id/first_name_et"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/zero_dp"
         android:layout_height="wrap_content"
         android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
@@ -54,10 +54,10 @@
 
     <TextView
         android:id="@+id/amount_tv"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/zero_dp"
         android:layout_height="wrap_content"
         android:text="@string/amount"
-        android:textSize="18sp"
+        android:textSize="@dimen/textSize18"
         android:textColor="@color/black"
         app:layout_constraintTop_toBottomOf="@id/last_name_et"
         app:layout_constraintStart_toStartOf="parent"
@@ -66,7 +66,7 @@
 
     <EditText
         android:id="@+id/amount_et"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/zero_dp"
         android:layout_height="wrap_content"
         android:inputType="number"
         app:layout_constraintTop_toBottomOf="@id/amount_tv"
@@ -78,11 +78,11 @@
 
     <TextView
         android:id="@+id/percent_tv"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/zero_dp"
         android:layout_height="wrap_content"
         android:text="@string/percent"
         android:textColor="@color/black"
-        android:textSize="18sp"
+        android:textSize="@dimen/textSize18"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/amount_tv"
         app:layout_constraintTop_toBottomOf="@id/first_name_et"
@@ -90,7 +90,7 @@
 
     <EditText
         android:id="@+id/percent_et"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/zero_dp"
         android:layout_height="wrap_content"
         android:inputType="number"
         app:layout_constraintEnd_toEndOf="parent"
@@ -102,10 +102,10 @@
 
     <TextView
         android:id="@+id/period_tv"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/zero_dp"
         android:layout_height="wrap_content"
         android:text="@string/period"
-        android:textSize="18sp"
+        android:textSize="@dimen/textSize18"
         android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/amount_et"
@@ -114,7 +114,7 @@
 
     <EditText
         android:id="@+id/period_et"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/zero_dp"
         android:layout_height="wrap_content"
         android:hint="@string/period"
         app:layout_constraintStart_toStartOf="parent"
@@ -126,10 +126,10 @@
 
     <TextView
         android:id="@+id/mobile_number_tv"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/zero_dp"
         android:layout_height="wrap_content"
         android:text="@string/mobile_number"
-        android:textSize="18sp"
+        android:textSize="@dimen/textSize18"
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/percent_et"
@@ -138,7 +138,7 @@
 
     <br.com.sapereaude.maskedEditText.MaskedEditText
         android:id="@+id/mobile_number_et"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/zero_dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/mobile_number_tv"
