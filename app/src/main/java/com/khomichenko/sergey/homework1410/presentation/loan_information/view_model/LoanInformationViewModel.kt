@@ -53,4 +53,13 @@ class LoanInformationViewModel @Inject constructor(
             }
         }
     }
+
+    fun changeState(state: String): String {
+        return when (state) {
+            "REJECTED" -> state.replace("REJECTED", "Отклонено")
+            "REGISTERED" -> state.replace("REGISTERED", "Зарегистрировано")
+            "APPROVED" -> state.replace("APPROVED", "Одобрено")
+            else -> ""
+        }
+    }
 }

@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
@@ -51,7 +52,6 @@ class AddNewLoanFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-
         getConditions()
         mBinding.sendBtn.setOnClickListener {
             getData()
@@ -59,9 +59,9 @@ class AddNewLoanFragment : Fragment() {
                 Log.d("TAG", "onStart: $it")
             }
         }
-
         showProgressBar()
         navigate()
+        exceptionHandler()
     }
 
     private fun showProgressBar(){
@@ -91,6 +91,12 @@ class AddNewLoanFragment : Fragment() {
             if (finished) {
                 navController().navigate(R.id.action_addNewLoanFragment_to_mainLoanFragment)
             }
+        }
+    }
+
+    private fun exceptionHandler() {
+        viewModel.exception.observe(this){ exceptionText ->
+            Toast.makeText(context, exceptionText, Toast.LENGTH_SHORT).show()
         }
     }
 

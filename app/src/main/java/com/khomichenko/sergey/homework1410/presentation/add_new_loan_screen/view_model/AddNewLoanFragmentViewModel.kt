@@ -68,7 +68,7 @@ class AddNewLoanFragmentViewModel @Inject constructor(
                 }
             } catch (e: IOException) {
                 withContext(Dispatchers.Main) {
-                    Log.e("IOException", "getAllLoans: $e")
+                    _exception.value = "Произошла какая-то ошибка, попробуйте ещё раз"
                     _loading.value = false
                 }
             } catch (e: HttpException) {
@@ -86,12 +86,20 @@ class AddNewLoanFragmentViewModel @Inject constructor(
             try {
                 val response = getConditionsUseCase.invoke().execute()
                 withContext(Dispatchers.Main) {
-                    _conditions.value = response.body()?.toEntity()
-                    _loading.value = false
+                    if (response.code() == 200 || response.code() == 201) {
+                        _conditions.value = response.body()?.toEntity()
+                        _loading.value = false
+                    }
+                    if (response.code() == 401) {
+                        _exception.value = "Ошибка авторизации"
+                    }
+                    if (response.code() == 404) {
+                        _exception.value = "Не найдено"
+                    }
                 }
             } catch (e: IOException) {
                 withContext(Dispatchers.Main) {
-                    Log.e("IOException", "getAllLoans: $e")
+                    _exception.value = "Произошла какая-то ошибка, попробуйте ещё раз"
                     _loading.value = false
                 }
             } catch (e: HttpException) {

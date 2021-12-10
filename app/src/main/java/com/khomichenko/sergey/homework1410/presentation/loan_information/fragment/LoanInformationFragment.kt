@@ -54,15 +54,18 @@ class LoanInformationFragment : Fragment() {
 
     private fun setData() {
         viewModel.loanInformation.observe(this) { loanInfo ->
+
+            val state = viewModel.changeState(loanInfo.state)
             mBinding.lastNameEt.setText(loanInfo.lastName)
             mBinding.firstNameEt.setText(loanInfo.firstName)
             mBinding.mobileNumberEt.setText(loanInfo.phoneNumber)
             mBinding.amountEt.setText(String.format(loanInfo.amount.toString()))
             mBinding.percentEt.setText(loanInfo.percent.toString())
-            mBinding.loanStatusEt.setText(loanInfo.state)
+            mBinding.loanStatusEt.setText(state)
             mBinding.periodEt.setText(loanInfo.period.toString())
         }
     }
+
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.exit_btn, menu)
