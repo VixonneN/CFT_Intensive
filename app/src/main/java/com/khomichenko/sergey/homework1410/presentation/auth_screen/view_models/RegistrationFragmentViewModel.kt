@@ -1,11 +1,7 @@
 package com.khomichenko.sergey.homework1410.presentation.auth_screen.view_models
 
 import android.util.Log
-import android.widget.Toast
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.khomichenko.sergey.homework1410.domain.entity.auth.AuthEntity
 import com.khomichenko.sergey.homework1410.domain.usecase.RegisterRequestUseCase
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -19,6 +15,7 @@ import javax.inject.Inject
 class RegistrationFragmentViewModel @Inject constructor(
     private val registerRequestUseCase: RegisterRequestUseCase,
 ) : ViewModel() {
+
 
     //Имя, указанное при регистрации
     private val _resultName = MutableLiveData<String>()
@@ -59,14 +56,29 @@ class RegistrationFragmentViewModel @Inject constructor(
                         } else if (response.code() == 400) {
                             _exception.value = "Пользователь уже существует"
                             _loading.value = false
+                        } else if (response.code() == 401) {
+                            _exception.value =
+                                "Не удалось проверить авторизацию. Авторизируйтесь ещё раз"
+                            _loading.value = false
+                        } else if (response.code() == 403) {
+                            _exception.value = "Доступ запрещён"
+                            _loading.value = false
+                        } else if (response.code() == 404) {
+                            _exception.value = "Ничего не найдено, попробуйте ещё раз"
+                            _loading.value = false
                         }
                     }
                 } catch (e: IOException) {
-                    _loading.value = false
-                    _exception.value = "Произошла какая-то ошибка, попробуйте ещё раз"
+                    withContext(Dispatchers.Main) {
+                        _loading.value = false
+                        _exception.value = "Произошла какая-то ошибка, попробуйте ещё раз"
+                    }
+
                 } catch (e: HttpException) {
-                    _loading.value = false
-                    _exception.value = "Ошибка соединения, попробуйте позже"
+                    withContext(Dispatchers.Main) {
+                        _loading.value = false
+                        _exception.value = "Произошла ошибка сети, попробуйте ещё раз"
+                    }
                 }
             }
         }

@@ -53,14 +53,18 @@ class AuthFragmentViewModel @Inject constructor(
                             }
                             _loading.value = false
                             _finish.value = true
-                        } else if (response.code() == 404) {
-                            _exception.value = "Пользователь не найден"
+                        } else if (response.code() == 401) {
+                            _exception.value =
+                                "Не удалось проверить авторизацию. Авторизируйтесь ещё раз"
                             _loading.value = false
                         } else if (response.code() == 403) {
-                            _exception.value = "Что-то пошло не так, попробуйте позже"
+                            _exception.value = "Доступ запрещён"
+                            _loading.value = false
+                        } else if (response.code() == 404) {
+                            _exception.value = "Произошла какая-то ошибка, попробуйте ещё раз"
+                            _loading.value = false
                         }
                     }
-
                 } catch (e: IOException) {
                     withContext(Dispatchers.Main) {
                         _exception.value = "Произошла какая-то ошибка, попробуйте ещё раз"
@@ -69,11 +73,17 @@ class AuthFragmentViewModel @Inject constructor(
 
                 } catch (e: HttpException) {
                     withContext(Dispatchers.Main) {
-                        _exception.value = "Ошибка соединения, попробуйте позже"
+                        _exception.value = "Произошла какая-то ошибка, попробуйте ещё раз"
                         _loading.value = false
                     }
                 }
             }
         }
     }
+
+    fun finishFragment() {
+        _finish.value = false
+        _loading.value = false
+    }
+
 }

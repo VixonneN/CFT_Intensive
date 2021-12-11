@@ -10,7 +10,7 @@ class MainLoanViewHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(model: LoanEntity) {
-        binding.dateLoanTv.text = model.date
+        binding.dateLoanTv.text = String.format(model.date.toString())
         binding.fioLoanerTv.text = "${model.firstName} ${model.lastName}"
         binding.loanStatusTv.text = changeState(model.state)
         binding.loanAmountTv.text = String.format(model.amount.toString())
@@ -20,7 +20,6 @@ class MainLoanViewHolder(
         }
     }
 
-    //TODO Добавить преобразование даты
     private fun changeState(state: String): String {
         return when (state) {
             "REJECTED" -> state.replace("REJECTED", "Отклонено")

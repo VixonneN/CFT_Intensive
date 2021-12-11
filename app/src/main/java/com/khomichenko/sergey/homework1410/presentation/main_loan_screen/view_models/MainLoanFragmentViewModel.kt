@@ -39,8 +39,19 @@ class MainLoanFragmentViewModel @Inject constructor(
             try {
                 val request = getAllLoansUseCase.invoke().execute()
                 withContext(Dispatchers.Main) {
-                    _allLoans.value = request.body()?.map { it.toLoanEntity() }
-                    _loading.value = false
+                    if (request.code() == 200 || request.code() == 201) {
+                        _allLoans.value = request.body()?.map { it.toLoanEntity() }
+                        _loading.value = false
+                    } else if (request.code() == 401) {
+                        _exception.value = "Не удалось проверить авторизацию. Авторизируйтесь ещё раз"
+                        _loading.value = false
+                    } else if (request.code() == 403) {
+                        _exception.value = "Доступ запрещён"
+                        _loading.value = false
+                    } else if (request.code() == 404) {
+                        _exception.value = "Произошла какая-то ошибка, попробуйте ещё раз"
+                        _loading.value = false
+                    }
                 }
             } catch (e: IOException) {
                 withContext(Dispatchers.Main) {
@@ -49,10 +60,14 @@ class MainLoanFragmentViewModel @Inject constructor(
                 }
             } catch (e: HttpException) {
                 withContext(Dispatchers.Main) {
-                    _exception.value = "Ошибка соединения, попробуйте позже"
+                    _exception.value = "Произошла какая-то ошибка, попробуйте ещё раз"
                     _loading.value = false
                 }
             }
         }
+    }
+
+    fun finishFragment(){
+        _loading.value = false
     }
 }

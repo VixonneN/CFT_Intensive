@@ -17,7 +17,7 @@ import javax.inject.Singleton
 class NetworkModule {
 
     companion object {
-        const val BASE_URL = "http://focusstart.appspot.com/"
+        const val BASE_URL = "https://focusstart.appspot.com/"
     }
 
     @Provides

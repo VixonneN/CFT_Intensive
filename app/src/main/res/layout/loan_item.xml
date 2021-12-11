@@ -21,11 +21,12 @@
             android:layout_height="wrap_content"
             tools:text="@tools:sample/date/ddmmyy"
             android:layout_marginTop="@dimen/margin_4dp"
-            android:layout_marginStart="@dimen/margin_4dp"
+            android:layout_marginStart="@dimen/margin_8dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:textColor="@color/black"
             android:textSize="@dimen/text_size14"
+            android:maxLength="20"
             />
 
         <TextView

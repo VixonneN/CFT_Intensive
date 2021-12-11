@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".presentation.loan_information.fragment.LoanInformationFragment">
 
@@ -92,19 +92,23 @@
         app:layout_constraintBaseline_toBaselineOf="@id/period_et"
         />
 
-    <androidx.constraintlayout.widget.Barrier
-        android:id="@+id/barrier"
+    <TextView
+        android:id="@+id/date_loan_tv"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        app:barrierDirection="end"
-        app:constraint_referenced_ids="mobile_number_tv"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_size_20"
+        android:text="@string/date_loan"
+        app:layout_constraintStart_toStartOf="@id/guideline_start"
+        app:layout_constraintTop_toBottomOf="@id/period_tv"
+        app:layout_constraintBaseline_toBaselineOf="@id/date_loan_et"
         />
 
     <EditText
         android:id="@+id/last_name_et"
         android:layout_width="@dimen/zero_dp"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/barrier"
+        app:layout_constraintStart_toStartOf="@id/barrier_center"
         app:layout_constraintEnd_toEndOf="@id/guideline_end"
         app:layout_constraintTop_toTopOf="@id/guideline_top"
         android:layout_marginStart="@dimen/margin_10dp"
@@ -118,7 +122,7 @@
         android:id="@+id/first_name_et"
         android:layout_width="@dimen/zero_dp"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/barrier"
+        app:layout_constraintStart_toStartOf="@id/barrier_center"
         app:layout_constraintEnd_toEndOf="@id/guideline_end"
         app:layout_constraintTop_toBottomOf="@id/last_name_et"
         android:layout_marginStart="@dimen/margin_10dp"
@@ -132,7 +136,7 @@
         android:id="@+id/mobile_number_et"
         android:layout_width="@dimen/zero_dp"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/barrier"
+        app:layout_constraintStart_toStartOf="@id/barrier_center"
         app:layout_constraintEnd_toEndOf="@id/guideline_end"
         app:layout_constraintTop_toBottomOf="@id/first_name_et"
         android:layout_marginStart="@dimen/margin_10dp"
@@ -145,7 +149,7 @@
         android:id="@+id/amount_et"
         android:layout_width="@dimen/zero_dp"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/barrier"
+        app:layout_constraintStart_toStartOf="@id/barrier_center"
         app:layout_constraintEnd_toEndOf="@id/guideline_end"
         app:layout_constraintTop_toBottomOf="@id/mobile_number_et"
         android:layout_marginStart="@dimen/margin_10dp"
@@ -158,7 +162,7 @@
         android:id="@+id/percent_et"
         android:layout_width="@dimen/zero_dp"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/barrier"
+        app:layout_constraintStart_toStartOf="@id/barrier_center"
         app:layout_constraintEnd_toEndOf="@id/guideline_end"
         app:layout_constraintTop_toBottomOf="@id/amount_et"
         android:layout_marginStart="@dimen/margin_10dp"
@@ -171,7 +175,7 @@
         android:id="@+id/loan_status_et"
         android:layout_width="@dimen/zero_dp"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/barrier"
+        app:layout_constraintStart_toStartOf="@id/barrier_center"
         app:layout_constraintEnd_toEndOf="@id/guideline_end"
         app:layout_constraintTop_toBottomOf="@id/percent_et"
         android:layout_marginStart="@dimen/margin_10dp"
@@ -184,13 +188,39 @@
         android:id="@+id/period_et"
         android:layout_width="@dimen/zero_dp"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/barrier"
+        app:layout_constraintStart_toStartOf="@id/barrier_center"
         android:layout_marginStart="@dimen/margin_10dp"
         android:enabled="false"
         app:layout_constraintEnd_toEndOf="@id/guideline_end"
         app:layout_constraintTop_toBottomOf="@id/loan_status_et"
         android:importantForAutofill="no"
         android:inputType="number"
+        />
+
+    <EditText
+        android:id="@+id/date_loan_et"
+        android:layout_width="@dimen/zero_dp"
+        android:layout_height="wrap_content"
+        android:inputType="date"
+        android:importantForAutofill="no"
+        android:enabled="false"
+        android:layout_marginStart="@dimen/margin_10dp"
+        android:maxLength="20"
+        app:layout_constraintEnd_toEndOf="@id/guideline_end"
+        app:layout_constraintTop_toBottomOf="@id/period_et"
+        app:layout_constraintStart_toStartOf="@id/barrier_center"
+        />
+
+    <TextView
+        android:layout_width="@dimen/zero_dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/guideline_start"
+        app:layout_constraintEnd_toEndOf="@id/guideline_end"
+        app:layout_constraintTop_toTopOf="@id/edit_text_barrier"
+        android:layout_marginTop="@dimen/margin_10dp"
+        android:textSize="@dimen/text_size_20"
+        android:textColor="@color/black"
+        tools:text="@tools:sample/lorem/random"
         />
 
     <androidx.constraintlayout.widget.Guideline
@@ -216,5 +246,22 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_begin="@dimen/margin_8dp"
         />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier_center"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        app:barrierDirection="end"
+        app:constraint_referenced_ids="mobile_number_tv"
+        />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/edit_text_barrier"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="date_loan_et"
+        />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

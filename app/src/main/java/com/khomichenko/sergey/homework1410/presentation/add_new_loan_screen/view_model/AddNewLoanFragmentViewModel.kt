@@ -35,7 +35,6 @@ class AddNewLoanFragmentViewModel @Inject constructor(
     private val _conditions = MutableLiveData<ConditionsEntity>()
     val conditions: LiveData<ConditionsEntity> = _conditions
 
-    //сообщение об ошибках TODO добавить обработку
     private val _exception = MutableLiveData<String>()
     val exception: LiveData<String> = _exception
 
@@ -62,9 +61,22 @@ class AddNewLoanFragmentViewModel @Inject constructor(
             try {
                 val response = createNewLoanUseCase.invoke(createLoanEntity).execute()
                 withContext(Dispatchers.Main) {
-                    _loan.value = response.body()?.toLoanEntity()
-                    _loading.value = false
-                    _finished.value = true
+                    if (response.code() == 200 || response.code() == 201) {
+                        _loan.value = response.body()?.toLoanEntity()
+                        _loading.value = false
+                        _finished.value = true
+                    } else if (response.code() == 401) {
+                        _exception.value =
+                            "Не удалось проверить авторизацию. Авторизируйтесь ещё раз"
+                        _loading.value = false
+                    } else if (response.code() == 403) {
+                        _exception.value = "Доступ запрещён"
+                        _loading.value = false
+
+                    } else if (response.code() == 404) {
+                        _exception.value = "Произошла какая-то ошибка, попробуйте ещё раз"
+                        _loading.value = false
+                    }
                 }
             } catch (e: IOException) {
                 withContext(Dispatchers.Main) {
@@ -73,7 +85,7 @@ class AddNewLoanFragmentViewModel @Inject constructor(
                 }
             } catch (e: HttpException) {
                 withContext(Dispatchers.Main) {
-                    _exception.value = "Ошибка соединения, попробуйте позже"
+                    _exception.value = "Произошла какая-то ошибка, попробуйте ещё раз"
                     _loading.value = false
                 }
             }
@@ -89,12 +101,18 @@ class AddNewLoanFragmentViewModel @Inject constructor(
                     if (response.code() == 200 || response.code() == 201) {
                         _conditions.value = response.body()?.toEntity()
                         _loading.value = false
-                    }
-                    if (response.code() == 401) {
-                        _exception.value = "Ошибка авторизации"
-                    }
-                    if (response.code() == 404) {
-                        _exception.value = "Не найдено"
+                    } else if (response.code() == 401) {
+                        _exception.value =
+                            "Не удалось проверить авторизацию. Авторизируйтесь ещё раз"
+                        _loading.value = false
+
+                    } else if (response.code() == 403) {
+                        _exception.value = "Доступ запрещён"
+                        _loading.value = false
+
+                    } else if (response.code() == 404) {
+                        _exception.value = "Произошла какая-то ошибка, попробуйте ещё раз"
+                        _loading.value = false
                     }
                 }
             } catch (e: IOException) {
@@ -104,7 +122,7 @@ class AddNewLoanFragmentViewModel @Inject constructor(
                 }
             } catch (e: HttpException) {
                 withContext(Dispatchers.Main) {
-                    _exception.value = "Ошибка соединения, попробуйте позже"
+                    _exception.value = "Произошла какая-то ошибка, попробуйте ещё раз"
                     _loading.value = false
                 }
             }

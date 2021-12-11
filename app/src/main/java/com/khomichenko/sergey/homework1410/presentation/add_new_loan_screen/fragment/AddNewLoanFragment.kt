@@ -107,7 +107,7 @@ class AddNewLoanFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.btn_exit -> {
-                PreferencesProvider.preferences.deleteToken("ACCESS_TOKEN_KEY")
+                PreferencesProvider.preferences.deleteToken()
                 PreferencesProvider.preferences.setInitUser(false)
                 navController().navigate(R.id.action_addNewLoanFragment_to_registrationFragment)
             }

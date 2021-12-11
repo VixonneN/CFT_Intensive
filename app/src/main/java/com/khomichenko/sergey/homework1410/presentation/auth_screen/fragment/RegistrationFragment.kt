@@ -63,7 +63,7 @@ class RegistrationFragment : Fragment() {
     }
 
     private fun deleteData() {
-        PreferencesProvider.preferences.deleteToken("ACCESS_TOKEN_KEY")
+        PreferencesProvider.preferences.deleteToken()
         PreferencesProvider.preferences.setInitUser(false)
     }
 

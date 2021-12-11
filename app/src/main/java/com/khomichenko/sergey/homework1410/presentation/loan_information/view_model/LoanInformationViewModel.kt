@@ -38,7 +38,21 @@ class LoanInformationViewModel @Inject constructor(
             try {
                 val response = getLoanInformationUseCase.invoke(id).execute()
                 withContext(Dispatchers.Main) {
-                    _loanInformation.value = response.body()?.toLoanEntity()
+                    if (response.code() == 200 || response.code() == 201) {
+                        _loanInformation.value = response.body()?.toLoanEntity()
+                    } else if (response.code() == 401) {
+                        _exception.value =
+                            "Не удалось проверить авторизацию. Авторизируйтесь ещё раз"
+                        _loading.value = false
+
+                    } else if (response.code() == 403) {
+                        _exception.value = "Доступ запрещён"
+                        _loading.value = false
+
+                    } else if (response.code() == 404) {
+                        _exception.value = "Ничего не найдено, попробуйте ещё раз"
+                        _loading.value = false
+                    }
                 }
             } catch (e: IOException) {
                 withContext(Dispatchers.Main) {
@@ -47,7 +61,7 @@ class LoanInformationViewModel @Inject constructor(
                 }
             } catch (e: HttpException) {
                 withContext(Dispatchers.Main) {
-                    _exception.value = "Ошибка соединения, попробуйте позже"
+                    _exception.value = "Произошла какая-то ошибка, попробуйте ещё раз"
                     _loading.value = false
                 }
             }

@@ -23,4 +23,7 @@
     <string name="loan_amount">Сумма займа</string>
     <string name="status_loan">Статус займа</string>
     <string name="toolbar">Займы онлайн</string>
+    <string name="number_mask">+7(###)###-##-##</string>
+    <string name="use_correct_value">Введите корректные значения</string>
+    <string name="date_loan">Дата займа</string>
 </resources>

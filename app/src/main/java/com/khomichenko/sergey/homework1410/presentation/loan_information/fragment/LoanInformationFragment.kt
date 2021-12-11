@@ -43,6 +43,7 @@ class LoanInformationFragment : Fragment() {
             ViewModelProvider(this, viewModelFactory)[LoanInformationViewModel::class.java]
     }
 
+    //TODO Доделать информацию о взятии займа и доделать анимации
     override fun onStart() {
         super.onStart()
         viewModel.getLoanInformation(idLoan)
@@ -63,9 +64,9 @@ class LoanInformationFragment : Fragment() {
             mBinding.percentEt.setText(loanInfo.percent.toString())
             mBinding.loanStatusEt.setText(state)
             mBinding.periodEt.setText(loanInfo.period.toString())
+            mBinding.dateLoanEt.setText(String.format(loanInfo.date.toString()))
         }
     }
-
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.exit_btn, menu)
@@ -74,7 +75,7 @@ class LoanInformationFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.btn_exit -> {
-                PreferencesProvider.preferences.deleteToken("ACCESS_TOKEN_KEY")
+                PreferencesProvider.preferences.deleteToken()
                 PreferencesProvider.preferences.setInitUser(false)
                 navController().navigate(R.id.action_loanInformationFragment_to_registrationFragment)
             }

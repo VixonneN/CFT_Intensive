@@ -11,7 +11,7 @@ class Preferences(context: Context) {
         preferences.edit().putString(ACCESS_TOKEN_KEY, token).apply()
     }
 
-    fun deleteToken(token: String) {
+    fun deleteToken() {
         preferences.edit().remove(ACCESS_TOKEN_KEY).apply()
     }
 

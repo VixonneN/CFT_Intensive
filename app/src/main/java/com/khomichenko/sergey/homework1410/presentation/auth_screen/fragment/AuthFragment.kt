@@ -86,10 +86,10 @@ class AuthFragment : Fragment() {
         val navigation = findNavController()
         viewModel.finish.observe(this) { finished ->
             if (finished) {
-
                 navigation.navigate(R.id.action_authFragment_to_mainLoanFragment)
             }
         }
+        viewModel.finishFragment()
     }
 
     override fun onDestroy() {

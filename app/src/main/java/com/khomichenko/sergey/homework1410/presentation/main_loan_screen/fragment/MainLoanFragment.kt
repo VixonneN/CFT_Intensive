@@ -1,10 +1,14 @@
 package com.khomichenko.sergey.homework1410.presentation.main_loan_screen.fragment
 
+import android.animation.ObjectAnimator
+import android.content.ContentValues.TAG
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
@@ -21,6 +25,7 @@ class MainLoanFragment : Fragment() {
 
     private var _binding: FragmentMainLoanBinding? = null
     private val mBinding get() = _binding!!
+    private var callback: OnBackPressedCallback? = null
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -32,6 +37,14 @@ class MainLoanFragment : Fragment() {
     ): View {
         _binding = FragmentMainLoanBinding.inflate(layoutInflater, container, false)
         setHasOptionsMenu(true)
+        callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                requireActivity().finish()
+                viewModel.finishFragment()
+            }
+        }.also {
+            requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, it)
+        }
         return mBinding.root
     }
 
@@ -51,6 +64,11 @@ class MainLoanFragment : Fragment() {
         showProgressBar()
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.finishFragment()
+    }
+
     private fun exceptionHandling() {
         viewModel.exception.observe(this) { exception ->
             Toast.makeText(context, exception, Toast.LENGTH_SHORT).show()
@@ -67,13 +85,14 @@ class MainLoanFragment : Fragment() {
         }
     }
 
-    private fun addDataRecycler(){
+    private fun addDataRecycler() {
         mBinding.loanRecyclerView.apply {
             val loanAdapter = MainLoanAdapter(
                 onViewClickListener = { id ->
                     val idBundle = Bundle()
                     idBundle.putInt("id_loan", id)
-                    navigation().navigate(R.id.action_mainLoanFragment_to_loanInformationFragment, idBundle)
+                    navigation().navigate(R.id.action_mainLoanFragment_to_loanInformationFragment,
+                        idBundle)
                 }
             )
             viewModel.allLoans.observe(this@MainLoanFragment) {
@@ -90,7 +109,7 @@ class MainLoanFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.btn_exit -> {
-                PreferencesProvider.preferences.deleteToken("ACCESS_TOKEN_KEY")
+                PreferencesProvider.preferences.deleteToken()
                 PreferencesProvider.preferences.setInitUser(false)
                 navigation().navigate(R.id.action_mainLoanFragment_to_registrationFragment)
             }
@@ -109,6 +128,6 @@ class MainLoanFragment : Fragment() {
         }
     }
 
-    private fun navigation() : NavController =
+    private fun navigation(): NavController =
         findNavController()
 }
