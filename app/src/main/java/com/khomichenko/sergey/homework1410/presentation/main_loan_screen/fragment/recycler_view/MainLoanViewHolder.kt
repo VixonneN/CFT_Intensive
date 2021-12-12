@@ -6,17 +6,17 @@ import com.khomichenko.sergey.homework1410.domain.entity.main_loan.LoanEntity
 
 class MainLoanViewHolder(
     private val binding: LoanItemBinding,
-    private val onViewClickListener: (Int) -> Unit,
+    private val onViewClickListener: (LoanEntity) -> Unit,
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(model: LoanEntity) {
         binding.dateLoanTv.text = String.format(model.date.toString())
-        binding.fioLoanerTv.text = "${model.firstName} ${model.lastName}"
+        "${model.firstName} ${model.lastName}".also { binding.fioLoanerTv.text = it }
         binding.loanStatusTv.text = changeState(model.state)
         binding.loanAmountTv.text = String.format(model.amount.toString())
 
         binding.itemContainer.setOnClickListener {
-            onViewClickListener(model.id)
+            onViewClickListener(model)
         }
     }
 

@@ -5,9 +5,11 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.khomichenko.sergey.homework1410.R
 import com.khomichenko.sergey.homework1410.data.auth.auth_token.PreferencesProvider
@@ -21,6 +23,8 @@ class AddNewLoanFragment : Fragment() {
     private var _binding: FragmentAddNewLoanBinding? = null
     private val mBinding get() = _binding!!
 
+    private var callback: OnBackPressedCallback? = null
+
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var viewModel: AddNewLoanFragmentViewModel
@@ -30,7 +34,14 @@ class AddNewLoanFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentAddNewLoanBinding.inflate(layoutInflater, container, false)
-        setHasOptionsMenu(true)
+        callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                navController().navigate(R.id.action_addNewLoanFragment_to_mainLoanFragment)
+                viewModel.finishFragment()
+            }
+        }.also {
+            requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, it)
+        }
         return mBinding.root
     }
 
@@ -89,6 +100,7 @@ class AddNewLoanFragment : Fragment() {
     private fun navigate() {
         viewModel.finished.observe(this) { finished ->
             if (finished) {
+                viewModel.finishFragment()
                 navController().navigate(R.id.action_addNewLoanFragment_to_mainLoanFragment)
             }
         }
@@ -100,23 +112,8 @@ class AddNewLoanFragment : Fragment() {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.exit_btn, menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.btn_exit -> {
-                PreferencesProvider.preferences.deleteToken()
-                PreferencesProvider.preferences.setInitUser(false)
-                navController().navigate(R.id.action_addNewLoanFragment_to_registrationFragment)
-            }
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
     private fun navController() : NavController =
-        findNavController()
+        Navigation.findNavController(requireActivity(), R.id.nav_host_fragment)
 
     override fun onDestroy() {
         super.onDestroy()

@@ -1,16 +1,14 @@
 package com.khomichenko.sergey.homework1410.presentation.main_loan_screen.fragment
 
-import android.animation.ObjectAnimator
-import android.content.ContentValues.TAG
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.khomichenko.sergey.homework1410.R
 import com.khomichenko.sergey.homework1410.data.auth.auth_token.PreferencesProvider
@@ -88,9 +86,9 @@ class MainLoanFragment : Fragment() {
     private fun addDataRecycler() {
         mBinding.loanRecyclerView.apply {
             val loanAdapter = MainLoanAdapter(
-                onViewClickListener = { id ->
+                onViewClickListener = { loan ->
                     val idBundle = Bundle()
-                    idBundle.putInt("id_loan", id)
+                    idBundle.putSerializable("id_loan", loan)
                     navigation().navigate(R.id.action_mainLoanFragment_to_loanInformationFragment,
                         idBundle)
                 }
@@ -124,10 +122,10 @@ class MainLoanFragment : Fragment() {
 
     private fun floatingButton() {
         mBinding.addLoanBtn.setOnClickListener {
-            navigation().navigate(R.id.action_mainLoanFragment_to_addNewLoanFragment)
+            val navigation = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment)
+            navigation.navigate(R.id.action_mainLoanFragment_to_addNewLoanFragment)
         }
     }
 
     private fun navigation(): NavController =
-        findNavController()
-}
+        Navigation.findNavController(requireActivity(), R.id.nav_host_fragment)}

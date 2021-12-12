@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.khomichenko.sergey.homework1410.R
 import com.khomichenko.sergey.homework1410.data.auth.auth_token.Preferences
@@ -111,7 +112,7 @@ class RegistrationFragment : Fragment() {
     }
 
     private fun navigation(): NavController =
-        findNavController()
+        Navigation.findNavController(requireActivity(), R.id.nav_host_fragment)
 
     override fun onDestroy() {
         super.onDestroy()

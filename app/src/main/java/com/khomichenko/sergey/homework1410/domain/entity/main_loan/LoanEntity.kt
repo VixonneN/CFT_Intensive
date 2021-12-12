@@ -1,6 +1,7 @@
 package com.khomichenko.sergey.homework1410.domain.entity.main_loan
 
 import com.khomichenko.sergey.homework1410.data.main_loan.LoanDTO
+import java.io.Serializable
 import java.math.BigDecimal
 import java.util.*
 
@@ -14,7 +15,7 @@ data class LoanEntity(
     val period: Int,
     val phoneNumber: String,
     val state: String
-    ){
+    ): Serializable {
 
     fun toLoanDto() : LoanDTO {
         return LoanDTO(

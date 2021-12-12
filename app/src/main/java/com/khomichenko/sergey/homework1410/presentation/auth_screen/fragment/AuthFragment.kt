@@ -7,7 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.khomichenko.sergey.homework1410.R
 import com.khomichenko.sergey.homework1410.databinding.FragmentAuthBinding
@@ -21,6 +24,7 @@ class AuthFragment : Fragment() {
 
     private var _binding: FragmentAuthBinding? = null
     private val mBinding get() = _binding!!
+    private var callback: OnBackPressedCallback? = null
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -40,6 +44,14 @@ class AuthFragment : Fragment() {
     ): View {
         _binding = FragmentAuthBinding.inflate(layoutInflater, container, false)
         registeredName = arguments?.getString("result_name")
+        callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                navigation().navigate(R.id.action_authFragment_to_registrationFragment)
+                viewModel.finishFragment()
+            }
+        }.also {
+            requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, it)
+        }
         return mBinding.root
     }
 
@@ -83,14 +95,16 @@ class AuthFragment : Fragment() {
     }
 
     private fun navigate() {
-        val navigation = findNavController()
         viewModel.finish.observe(this) { finished ->
             if (finished) {
-                navigation.navigate(R.id.action_authFragment_to_mainLoanFragment)
+                navigation().navigate(R.id.action_authFragment_to_mainLoanFragment)
             }
         }
         viewModel.finishFragment()
     }
+
+    private fun navigation() : NavController =
+        Navigation.findNavController(requireActivity(), R.id.nav_host_fragment)
 
     override fun onDestroy() {
         super.onDestroy()

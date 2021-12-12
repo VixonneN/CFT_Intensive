@@ -53,7 +53,6 @@ class AddNewLoanFragmentViewModel @Inject constructor(
         period: Int,
         number: String,
     ) {
-        _finished.value = false
         _loading.value = true
         val createLoanEntity =
             CreateLoanEntity(amount, firstName, lastName, percent, period, number)
@@ -127,5 +126,10 @@ class AddNewLoanFragmentViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun finishFragment() {
+        _finished.value = false
+        _loading.value = false
     }
 }

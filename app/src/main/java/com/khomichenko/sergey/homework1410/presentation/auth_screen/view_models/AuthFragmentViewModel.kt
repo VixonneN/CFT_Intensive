@@ -85,5 +85,4 @@ class AuthFragmentViewModel @Inject constructor(
         _finish.value = false
         _loading.value = false
     }
-
 }

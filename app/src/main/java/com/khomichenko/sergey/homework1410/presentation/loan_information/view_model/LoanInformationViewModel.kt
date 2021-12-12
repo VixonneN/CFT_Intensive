@@ -34,17 +34,18 @@ class LoanInformationViewModel @Inject constructor(
     val exception: LiveData<String> = _exception
 
     fun getLoanInformation(id: Int) {
+        _loading.value = true
         viewModelScope.launch(Dispatchers.IO + handler) {
             try {
                 val response = getLoanInformationUseCase.invoke(id).execute()
                 withContext(Dispatchers.Main) {
                     if (response.code() == 200 || response.code() == 201) {
                         _loanInformation.value = response.body()?.toLoanEntity()
+                        _loading.value = false
                     } else if (response.code() == 401) {
                         _exception.value =
                             "Не удалось проверить авторизацию. Авторизируйтесь ещё раз"
                         _loading.value = false
-
                     } else if (response.code() == 403) {
                         _exception.value = "Доступ запрещён"
                         _loading.value = false
@@ -66,6 +67,14 @@ class LoanInformationViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun currentLoan(loanEntity: LoanEntity) {
+        _loanInformation.value = loanEntity
+    }
+
+    fun finishFragment(){
+        _loading.value = false
     }
 
     fun changeState(state: String): String {

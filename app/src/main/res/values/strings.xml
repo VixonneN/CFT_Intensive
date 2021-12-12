@@ -1,10 +1,10 @@
 <resources>
-    <string name="app_name">homework 14.10</string>
+    <string name="app_name">Займы онлайн</string>
     <string name="user_name">Имя пользователя</string>
     <string name="user_password">Пароль</string>
     <string name="login">Войти</string>
     <string name="registrate">Зарегистрироваться</string>
-    <string name="user_name_example">testadmin</string>
+    <string name="user_name_example">Иванов</string>
     <string name="yet_registrate">Уже зарегистрированы? Войти</string>
     <string name="enter_last_name">Введите фамилию</string>
     <string name="enter_first_name">Введите имя</string>
@@ -26,4 +26,7 @@
     <string name="number_mask">+7(###)###-##-##</string>
     <string name="use_correct_value">Введите корректные значения</string>
     <string name="date_loan">Дата займа</string>
+    <string name="accepted_loan">Вы можете забрать займ в банке или получить его на карту</string>
+    <string name="registered_loan">Ваша заявка зарегистрирована, ожидайте</string>
+    <string name="rejected_loan">Ваша заявка была отклонена</string>
 </resources>
