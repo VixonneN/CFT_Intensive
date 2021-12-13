@@ -1,9 +1,7 @@
 package com.khomichenko.sergey.homework1410.presentation.main_loan_screen.fragment
 
-import android.content.ContentValues.TAG
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.Toast
@@ -12,12 +10,11 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.findNavController
+import androidx.work.WorkManager
 import com.khomichenko.sergey.homework1410.R
 import com.khomichenko.sergey.homework1410.data.auth.auth_token.PreferencesProvider
 import com.khomichenko.sergey.homework1410.databinding.FragmentMainLoanBinding
 import com.khomichenko.sergey.homework1410.di.App
-import com.khomichenko.sergey.homework1410.presentation.MainActivity
 import com.khomichenko.sergey.homework1410.presentation.main_loan_screen.fragment.recycler_view.MainLoanAdapter
 import com.khomichenko.sergey.homework1410.presentation.main_loan_screen.view_models.MainLoanFragmentViewModel
 import kotlinx.android.synthetic.main.fragment_main_loan.*
@@ -64,11 +61,15 @@ class MainLoanFragment : Fragment() {
         addDataRecycler()
         exceptionHandling()
         showProgressBar()
-    }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.finishFragment()
+        viewModel.allLoans.observe(this) {
+            it.forEach { loanEntity ->
+                if (loanEntity.state == "APPROVED") {
+                    WorkManager.getInstance(requireContext())
+                        .enqueue(viewModel.initializeWorker(loanEntity))
+                }
+            }
+        }
     }
 
     private fun exceptionHandling() {
@@ -141,4 +142,5 @@ class MainLoanFragment : Fragment() {
     }
 
     private fun navigation(): NavController =
-        Navigation.findNavController(requireActivity(), R.id.nav_host_fragment)}
+        Navigation.findNavController(requireActivity(), R.id.nav_host_fragment)
+}

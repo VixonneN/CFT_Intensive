@@ -30,4 +30,8 @@
     <string name="registered_loan">Ваша заявка зарегистрирована, ожидайте</string>
     <string name="rejected_loan">Ваша заявка была отклонена</string>
     <string name="conditions_loaded">Условия были загружены</string>
+    <string name="accepted">Одобрено</string>
+    <string name="registrated">Зарегистрировано</string>
+    <string name="rejected">Отклонено</string>
+    <string name="notificationWorker">notificationWorker</string>
 </resources>

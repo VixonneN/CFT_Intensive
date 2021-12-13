@@ -57,7 +57,6 @@ class LoanInformationFragment : Fragment() {
             ViewModelProvider(this, viewModelFactory)[LoanInformationViewModel::class.java]
     }
 
-    //TODO Доделать информацию о взятии займа и доделать анимации
     override fun onStart() {
         super.onStart()
         viewModel.currentLoan(currentLoan)
@@ -85,13 +84,13 @@ class LoanInformationFragment : Fragment() {
 
     private fun setLoanText(state: String) =
         when (state) {
-            "Одобрено" -> {
+            getString(R.string.accepted) -> {
                 mBinding.loanText.setText(getString(R.string.accepted_loan))
             }
-            "Зарегистрировано" -> {
+            getString(R.string.registrated) -> {
                 mBinding.loanText.setText(getString(R.string.registered_loan))
             }
-            "Отклонено"  -> {
+            getString(R.string.rejected)  -> {
                 mBinding.loanText.setText(getString(R.string.rejected_loan))
             }
             else -> Any()

@@ -5,6 +5,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.work.Data
+import androidx.work.PeriodicWorkRequest
+import com.khomichenko.sergey.homework1410.domain.worker.NotificationWorker
 import com.khomichenko.sergey.homework1410.domain.entity.main_loan.LoanEntity
 import com.khomichenko.sergey.homework1410.domain.usecase.GetAllLoansUseCase
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -13,6 +16,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import java.io.IOException
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class MainLoanFragmentViewModel @Inject constructor(
@@ -65,6 +69,17 @@ class MainLoanFragmentViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun initializeWorker(loanEntity: LoanEntity) : PeriodicWorkRequest {
+        val data = Data.Builder()
+            .putString("fio_loan", loanEntity.lastName + " " + loanEntity.firstName)
+            .putInt("amount_loan", loanEntity.amount.toInt())
+            .build()
+        return PeriodicWorkRequest.Builder(NotificationWorker::class.java,
+                25, TimeUnit.MINUTES)
+            .setInputData(data)
+            .build()
     }
 
     fun finishFragment(){
