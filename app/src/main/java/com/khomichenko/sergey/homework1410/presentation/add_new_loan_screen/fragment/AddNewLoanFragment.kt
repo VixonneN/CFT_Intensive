@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
@@ -67,7 +68,7 @@ class AddNewLoanFragment : Fragment() {
         mBinding.sendBtn.setOnClickListener {
             getData()
             viewModel.loan.observe(this) {
-                Log.d("TAG", "onStart: $it")
+                Toast.makeText(context, getString(R.string.conditions_loaded), Toast.LENGTH_SHORT).show()
             }
         }
         showProgressBar()

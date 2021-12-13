@@ -2,11 +2,10 @@ package com.khomichenko.sergey.homework1410.presentation.auth_screen.fragment
 
 import android.content.Context
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -49,7 +48,7 @@ class RegistrationFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-
+        setHasOptionsMenu(true)
         if (PreferencesProvider.preferences.getInitUser() &&
             PreferencesProvider.preferences.savedToken.isNotEmpty()) {
 
@@ -113,6 +112,25 @@ class RegistrationFragment : Fragment() {
 
     private fun navigation(): NavController =
         Navigation.findNavController(requireActivity(), R.id.nav_host_fragment)
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.change_theme, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.change_theme_btn -> {
+                if (PreferencesProvider.preferences.getTheme() == AppCompatDelegate.MODE_NIGHT_NO) {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                    PreferencesProvider.preferences.setTheme(AppCompatDelegate.MODE_NIGHT_YES)
+                } else {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                    PreferencesProvider.preferences.setTheme(AppCompatDelegate.MODE_NIGHT_NO)
+                }
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
 
     override fun onDestroy() {
         super.onDestroy()

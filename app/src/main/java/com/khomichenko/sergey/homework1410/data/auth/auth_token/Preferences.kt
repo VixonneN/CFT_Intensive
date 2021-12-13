@@ -2,6 +2,7 @@ package com.khomichenko.sergey.homework1410.data.auth.auth_token
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.appcompat.app.AppCompatDelegate
 
 class Preferences(context: Context) {
     private val preferences: SharedPreferences =
@@ -22,6 +23,13 @@ class Preferences(context: Context) {
     fun getInitUser() : Boolean =
         preferences.getBoolean(INIT_USER, false)
 
+    fun setTheme(theme: Int) {
+        preferences.edit().putInt(CURRENT_THEME, theme).apply()
+    }
+
+    fun getTheme(): Int =
+        preferences.getInt(CURRENT_THEME, AppCompatDelegate.MODE_NIGHT_NO)
+
     val savedToken: String
         get() = preferences.getString(ACCESS_TOKEN_KEY, "")!!
 
@@ -29,5 +37,6 @@ class Preferences(context: Context) {
         private const val INIT_USER = "initUser"
         private const val PREFERENCES_NAME = "token_preferences"
         private const val ACCESS_TOKEN_KEY = "ACCESS_TOKEN_KEY"
+        private const val CURRENT_THEME = "current_theme"
     }
 }

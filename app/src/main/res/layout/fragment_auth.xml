@@ -19,8 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/user_name"
-            android:textColor="@color/black"
-            android:textSize="@dimen/text_size_20"
+            style="@style/colorTextView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -38,13 +37,12 @@
             app:layout_constraintTop_toBottomOf="@id/login_tv" />
 
         <TextView
+            style="@style/colorTextView"
             android:id="@+id/password_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/auth_margin_top"
             android:text="@string/user_password"
-            android:textColor="@color/black"
-            android:textSize="@dimen/text_size_20"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/login_et" />
@@ -67,6 +65,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/auth_margin_top"
             android:text="@string/login"
+            style="@style/colorBtn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/password_et" />

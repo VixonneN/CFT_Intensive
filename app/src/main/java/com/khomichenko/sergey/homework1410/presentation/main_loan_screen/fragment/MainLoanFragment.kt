@@ -1,11 +1,14 @@
 package com.khomichenko.sergey.homework1410.presentation.main_loan_screen.fragment
 
+import android.content.ContentValues.TAG
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -14,6 +17,7 @@ import com.khomichenko.sergey.homework1410.R
 import com.khomichenko.sergey.homework1410.data.auth.auth_token.PreferencesProvider
 import com.khomichenko.sergey.homework1410.databinding.FragmentMainLoanBinding
 import com.khomichenko.sergey.homework1410.di.App
+import com.khomichenko.sergey.homework1410.presentation.MainActivity
 import com.khomichenko.sergey.homework1410.presentation.main_loan_screen.fragment.recycler_view.MainLoanAdapter
 import com.khomichenko.sergey.homework1410.presentation.main_loan_screen.view_models.MainLoanFragmentViewModel
 import kotlinx.android.synthetic.main.fragment_main_loan.*
@@ -110,6 +114,15 @@ class MainLoanFragment : Fragment() {
                 PreferencesProvider.preferences.deleteToken()
                 PreferencesProvider.preferences.setInitUser(false)
                 navigation().navigate(R.id.action_mainLoanFragment_to_registrationFragment)
+            }
+            R.id.btn_change_theme -> {
+                if (PreferencesProvider.preferences.getTheme() == AppCompatDelegate.MODE_NIGHT_NO) {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                    PreferencesProvider.preferences.setTheme(AppCompatDelegate.MODE_NIGHT_YES)
+                } else {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                    PreferencesProvider.preferences.setTheme(AppCompatDelegate.MODE_NIGHT_NO)
+                }
             }
         }
         return super.onOptionsItemSelected(item)

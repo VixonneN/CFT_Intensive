@@ -32,12 +32,12 @@
             >
 
             <TextView
+                style="@style/colorTextView"
                 android:id="@+id/last_name_tv"
                 android:layout_width="@dimen/zero_dp"
                 android:layout_height="wrap_content"
                 android:text="@string/enter_last_name"
                 android:textColor="@color/black"
-                android:textSize="@dimen/textSize18"
                 app:layout_constraintEnd_toStartOf="@id/amount_tv"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -177,7 +177,6 @@
                 mask:allowed_chars="1234567890"
                 mask:mask="@string/number_mask" />
 
-
             <ProgressBar
                 android:id="@+id/add_loan_progressBar"
                 android:layout_width="wrap_content"
@@ -198,6 +197,7 @@
         android:layout_marginStart="@dimen/margin_8dp"
         android:layout_marginEnd="@dimen/margin_8dp"
         android:layout_marginBottom="@dimen/margin_10dp"
+        style="@style/colorBtn"
         android:text="@string/send"
         app:layout_constraintBottom_toBottomOf="parent" />
 

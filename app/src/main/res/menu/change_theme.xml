@@ -3,15 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/change_theme"
+        android:id="@+id/change_theme_btn"
         android:icon="@drawable/ic_baseline_color_lens_24"
-        app:showAsAction="ifRoom"
-        android:title=""
-        />
-
-    <item
-        android:id="@+id/btn_refresh"
-        android:icon="@drawable/ic_baseline_refresh_24"
         app:showAsAction="ifRoom"
         android:title=""
         />

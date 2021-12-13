@@ -29,4 +29,5 @@
     <string name="accepted_loan">Вы можете забрать займ в банке или получить его на карту</string>
     <string name="registered_loan">Ваша заявка зарегистрирована, ожидайте</string>
     <string name="rejected_loan">Ваша заявка была отклонена</string>
+    <string name="conditions_loaded">Условия были загружены</string>
 </resources>

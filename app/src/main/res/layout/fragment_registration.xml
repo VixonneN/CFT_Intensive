@@ -19,8 +19,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/user_name"
-            android:textColor="@color/black"
-            android:textSize="@dimen/text_size_20"
+            android:textColor="?colorPrimaryDark"
+            style="@style/colorTextView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -43,8 +43,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/auth_margin_top"
             android:text="@string/user_password"
-            android:textColor="@color/black"
-            android:textSize="@dimen/text_size_20"
+            style="@style/colorTextView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/login_et" />
@@ -67,32 +66,21 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/auth_margin_top"
             android:text="@string/registrate"
+            style="@style/colorBtn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/password_et" />
-
-        <TextView
-            android:id="@+id/yet_registrate_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/auth_margin_top"
-            android:text="@string/yet_registrate"
-            android:textColor="@color/black"
-            android:textSize="@dimen/text_size_20"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/registrate_btn_reg"
-            />
 
         <Button
             android:id="@+id/login_btn_reg"
             android:layout_width="@dimen/auth_width"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/auth_margin_top"
-            android:text="@string/login"
+            android:text="@string/yet_registrate"
+            style="@style/colorBtn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/yet_registrate_tv" />
+            app:layout_constraintTop_toBottomOf="@id/registrate_btn_reg" />
 
         <ProgressBar
             android:id="@+id/auth_progressBar"

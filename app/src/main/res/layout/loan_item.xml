@@ -24,7 +24,7 @@
             android:layout_marginStart="@dimen/margin_8dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:textColor="@color/black"
+            style="@style/colorTextView"
             android:textSize="@dimen/text_size14"
             android:maxLength="20"
             />
@@ -34,12 +34,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="@tools:sample/full_names"
-            android:textSize="@dimen/text_size_20"
             android:layout_marginTop="@dimen/margin_8dp"
             android:layout_marginStart="@dimen/margin_8dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/date_loan_tv"
-            android:textColor="@color/black"
+            style="@style/colorTextView"
             />
 
         <TextView
@@ -49,8 +48,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/fio_loaner_tv"
             tools:text="@tools:sample/cities"
+            style="@style/colorTextView"
             android:textSize="@dimen/text_size14"
-            android:textColor="@color/black"
             android:layout_marginTop="@dimen/margin_8dp"
             android:layout_marginStart="@dimen/margin_8dp"
             android:layout_marginBottom="@dimen/margin_8dp"
