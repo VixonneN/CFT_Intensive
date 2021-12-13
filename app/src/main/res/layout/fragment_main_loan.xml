@@ -23,6 +23,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:clickable="true"
         android:focusable="true"
+        android:stateListAnimator="@null"
         android:backgroundTint="?colorOnPrimary"
         android:src="@drawable/ic_baseline_add_24"
         tools:ignore="ContentDescription"

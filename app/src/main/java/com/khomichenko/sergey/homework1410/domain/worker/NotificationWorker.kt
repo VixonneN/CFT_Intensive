@@ -35,7 +35,7 @@ class NotificationWorker(context: Context, workerParameters: WorkerParameters) :
                 applicationContext.getString(R.string.notificationWorker))
                 .setContentTitle(title)
                 .setContentText(task)
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
         notificationManager.notify(1, notification.build())
     }
 }
