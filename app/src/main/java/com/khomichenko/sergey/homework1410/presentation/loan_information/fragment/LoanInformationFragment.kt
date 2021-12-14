@@ -2,7 +2,6 @@ package com.khomichenko.sergey.homework1410.presentation.loan_information.fragme
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.Toast
@@ -11,9 +10,8 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.findNavController
 import com.khomichenko.sergey.homework1410.R
-import com.khomichenko.sergey.homework1410.data.auth.auth_token.PreferencesProvider
+import com.khomichenko.sergey.homework1410.data.shared_preferences.PreferencesProvider
 import com.khomichenko.sergey.homework1410.databinding.FragmentLoanInformationBinding
 import com.khomichenko.sergey.homework1410.di.App
 import com.khomichenko.sergey.homework1410.domain.entity.main_loan.LoanEntity
@@ -106,13 +104,7 @@ class LoanInformationFragment : Fragment() {
                 viewModel.getLoanInformation(currentLoan.id)
             }
             R.id.change_theme -> {
-                if (PreferencesProvider.preferences.getTheme() == AppCompatDelegate.MODE_NIGHT_NO) {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                    PreferencesProvider.preferences.setTheme(AppCompatDelegate.MODE_NIGHT_YES)
-                } else {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                    PreferencesProvider.preferences.setTheme(AppCompatDelegate.MODE_NIGHT_NO)
-                }
+                viewModel.changeTheme(PreferencesProvider.preferences.getTheme())
             }
         }
         return super.onOptionsItemSelected(item)

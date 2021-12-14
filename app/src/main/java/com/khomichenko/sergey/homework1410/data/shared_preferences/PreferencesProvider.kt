@@ -1,4 +1,4 @@
-package com.khomichenko.sergey.homework1410.data.auth.auth_token
+package com.khomichenko.sergey.homework1410.data.shared_preferences
 
 import android.content.Context
 import androidx.annotation.MainThread

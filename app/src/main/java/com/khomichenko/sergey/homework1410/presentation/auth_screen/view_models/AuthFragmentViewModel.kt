@@ -1,11 +1,12 @@
 package com.khomichenko.sergey.homework1410.presentation.auth_screen.view_models
 
 import android.util.Log
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.khomichenko.sergey.homework1410.data.auth.auth_token.PreferencesProvider
+import com.khomichenko.sergey.homework1410.data.shared_preferences.PreferencesProvider
 import com.khomichenko.sergey.homework1410.domain.entity.auth.AuthEntity
 import com.khomichenko.sergey.homework1410.domain.usecase.LoginRequestUseCase
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -78,6 +79,16 @@ class AuthFragmentViewModel @Inject constructor(
                     }
                 }
             }
+        }
+    }
+
+    fun changeTheme(currentTheme: Int) {
+        if (currentTheme == AppCompatDelegate.MODE_NIGHT_NO) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            PreferencesProvider.preferences.setTheme(AppCompatDelegate.MODE_NIGHT_YES)
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            PreferencesProvider.preferences.setTheme(AppCompatDelegate.MODE_NIGHT_NO)
         }
     }
 

@@ -2,18 +2,14 @@ package com.khomichenko.sergey.homework1410.presentation.add_new_loan_screen.fra
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.findNavController
 import com.khomichenko.sergey.homework1410.R
-import com.khomichenko.sergey.homework1410.data.auth.auth_token.PreferencesProvider
 import com.khomichenko.sergey.homework1410.databinding.FragmentAddNewLoanBinding
 import com.khomichenko.sergey.homework1410.di.App
 import com.khomichenko.sergey.homework1410.presentation.add_new_loan_screen.view_model.AddNewLoanFragmentViewModel

@@ -1,4 +1,4 @@
-package com.khomichenko.sergey.homework1410.data.auth.auth_token
+package com.khomichenko.sergey.homework1410.data.shared_preferences
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -11,6 +11,9 @@ class Preferences(context: Context) {
     fun saveToken(token: String) {
         preferences.edit().putString(ACCESS_TOKEN_KEY, token).apply()
     }
+
+    val savedToken: String
+        get() = preferences.getString(ACCESS_TOKEN_KEY, "")!!
 
     fun deleteToken() {
         preferences.edit().remove(ACCESS_TOKEN_KEY).apply()
@@ -30,8 +33,6 @@ class Preferences(context: Context) {
     fun getTheme(): Int =
         preferences.getInt(CURRENT_THEME, AppCompatDelegate.MODE_NIGHT_NO)
 
-    val savedToken: String
-        get() = preferences.getString(ACCESS_TOKEN_KEY, "")!!
 
     companion object {
         private const val INIT_USER = "initUser"

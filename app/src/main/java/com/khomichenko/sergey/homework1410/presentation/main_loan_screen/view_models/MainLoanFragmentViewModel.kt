@@ -1,12 +1,14 @@
 package com.khomichenko.sergey.homework1410.presentation.main_loan_screen.view_models
 
 import android.util.Log
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.work.Data
 import androidx.work.PeriodicWorkRequest
+import com.khomichenko.sergey.homework1410.data.shared_preferences.PreferencesProvider
 import com.khomichenko.sergey.homework1410.domain.worker.NotificationWorker
 import com.khomichenko.sergey.homework1410.domain.entity.main_loan.LoanEntity
 import com.khomichenko.sergey.homework1410.domain.usecase.GetAllLoansUseCase
@@ -80,6 +82,16 @@ class MainLoanFragmentViewModel @Inject constructor(
                 25, TimeUnit.MINUTES)
             .setInputData(data)
             .build()
+    }
+
+    fun changeTheme(currentTheme: Int) {
+        if (currentTheme == AppCompatDelegate.MODE_NIGHT_NO) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            PreferencesProvider.preferences.setTheme(AppCompatDelegate.MODE_NIGHT_YES)
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            PreferencesProvider.preferences.setTheme(AppCompatDelegate.MODE_NIGHT_NO)
+        }
     }
 
     fun finishFragment(){

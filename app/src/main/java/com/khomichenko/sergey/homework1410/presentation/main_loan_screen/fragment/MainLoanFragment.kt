@@ -12,7 +12,7 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.work.WorkManager
 import com.khomichenko.sergey.homework1410.R
-import com.khomichenko.sergey.homework1410.data.auth.auth_token.PreferencesProvider
+import com.khomichenko.sergey.homework1410.data.shared_preferences.PreferencesProvider
 import com.khomichenko.sergey.homework1410.databinding.FragmentMainLoanBinding
 import com.khomichenko.sergey.homework1410.di.App
 import com.khomichenko.sergey.homework1410.presentation.main_loan_screen.fragment.recycler_view.MainLoanAdapter
@@ -64,7 +64,7 @@ class MainLoanFragment : Fragment() {
 
         viewModel.allLoans.observe(this) {
             it.forEach { loanEntity ->
-                if (loanEntity.state == "APPROVED") {
+                if (loanEntity.state == getString(R.string.approved)) {
                     WorkManager.getInstance(requireContext())
                         .enqueue(viewModel.initializeWorker(loanEntity))
                 }
@@ -117,13 +117,7 @@ class MainLoanFragment : Fragment() {
                 navigation().navigate(R.id.action_mainLoanFragment_to_registrationFragment)
             }
             R.id.btn_change_theme -> {
-                if (PreferencesProvider.preferences.getTheme() == AppCompatDelegate.MODE_NIGHT_NO) {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                    PreferencesProvider.preferences.setTheme(AppCompatDelegate.MODE_NIGHT_YES)
-                } else {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                    PreferencesProvider.preferences.setTheme(AppCompatDelegate.MODE_NIGHT_NO)
-                }
+                viewModel.changeTheme(PreferencesProvider.preferences.getTheme())
             }
         }
         return super.onOptionsItemSelected(item)

@@ -1,10 +1,12 @@
 package com.khomichenko.sergey.homework1410.presentation.loan_information.view_model
 
 import android.util.Log
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.khomichenko.sergey.homework1410.data.shared_preferences.PreferencesProvider
 import com.khomichenko.sergey.homework1410.domain.entity.main_loan.LoanEntity
 import com.khomichenko.sergey.homework1410.domain.usecase.GetLoanInformationUseCase
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -66,6 +68,16 @@ class LoanInformationViewModel @Inject constructor(
                     _loading.value = false
                 }
             }
+        }
+    }
+
+    fun changeTheme(currentTheme: Int) {
+        if (currentTheme == AppCompatDelegate.MODE_NIGHT_NO) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            PreferencesProvider.preferences.setTheme(AppCompatDelegate.MODE_NIGHT_YES)
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            PreferencesProvider.preferences.setTheme(AppCompatDelegate.MODE_NIGHT_NO)
         }
     }
 

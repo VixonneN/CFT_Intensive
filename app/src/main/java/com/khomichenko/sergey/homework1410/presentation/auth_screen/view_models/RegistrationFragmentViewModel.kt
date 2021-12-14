@@ -1,7 +1,9 @@
 package com.khomichenko.sergey.homework1410.presentation.auth_screen.view_models
 
 import android.util.Log
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.*
+import com.khomichenko.sergey.homework1410.data.shared_preferences.PreferencesProvider
 import com.khomichenko.sergey.homework1410.domain.entity.auth.AuthEntity
 import com.khomichenko.sergey.homework1410.domain.usecase.RegisterRequestUseCase
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -49,7 +51,7 @@ class RegistrationFragmentViewModel @Inject constructor(
                     val response = registerRequestUseCase.invoke(dataRegisterBody).execute()
                     withContext(Dispatchers.Main) {
                         if (response.code() == 200 || response.code() == 201) {
-                            val name = response.body()?.name
+                            val name = response.body()?.toEntity()?.name
                             _resultName.value = name
                             _loading.value = false
                             _finish.value = true
@@ -83,4 +85,15 @@ class RegistrationFragmentViewModel @Inject constructor(
             }
         }
     }
+
+    fun changeTheme(currentTheme: Int) {
+        if (currentTheme == AppCompatDelegate.MODE_NIGHT_NO) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            PreferencesProvider.preferences.setTheme(AppCompatDelegate.MODE_NIGHT_YES)
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            PreferencesProvider.preferences.setTheme(AppCompatDelegate.MODE_NIGHT_NO)
+        }
+    }
+
 }

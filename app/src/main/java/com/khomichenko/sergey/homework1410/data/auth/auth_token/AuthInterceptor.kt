@@ -1,10 +1,10 @@
 package com.khomichenko.sergey.homework1410.data.auth.auth_token
 
 import android.text.TextUtils
+import com.khomichenko.sergey.homework1410.data.shared_preferences.PreferencesProvider
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
-import java.io.IOException
 
 class AuthInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {

@@ -9,15 +9,4 @@ data class CreateLoanBody(
     val percent: Double,
     val period: Int,
     val phoneNumber: String,
-) {
-    fun toEntity(): CreateLoanEntity {
-        return CreateLoanEntity(
-            amount,
-            firstName,
-            lastName,
-            percent,
-            period,
-            phoneNumber
-        )
-    }
-}
+)

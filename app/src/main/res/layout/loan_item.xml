@@ -65,7 +65,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             tools:text="@tools:sample/us_zipcodes"
             android:textSize="@dimen/text_size_24"
-            android:textColor="@color/green"
+            android:textColor="?color"
             android:layout_marginEnd="@dimen/margin_10dp"
             />
 

@@ -10,14 +10,11 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.findNavController
 import com.khomichenko.sergey.homework1410.R
-import com.khomichenko.sergey.homework1410.data.auth.auth_token.PreferencesProvider
+import com.khomichenko.sergey.homework1410.data.shared_preferences.PreferencesProvider
 import com.khomichenko.sergey.homework1410.databinding.FragmentAuthBinding
-import com.khomichenko.sergey.homework1410.databinding.FragmentRegistrationBinding
 import com.khomichenko.sergey.homework1410.di.App
 import com.khomichenko.sergey.homework1410.presentation.auth_screen.view_models.AuthFragmentViewModel
-import com.khomichenko.sergey.homework1410.presentation.auth_screen.view_models.RegistrationFragmentViewModel
 import javax.inject.Inject
 
 class AuthFragment : Fragment() {
@@ -43,7 +40,9 @@ class AuthFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentAuthBinding.inflate(layoutInflater, container, false)
+
         registeredName = arguments?.getString("result_name")
+
         callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 navigation().navigate(R.id.action_authFragment_to_registrationFragment)
@@ -52,6 +51,7 @@ class AuthFragment : Fragment() {
         }.also {
             requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, it)
         }
+
         return mBinding.root
     }
 
@@ -59,13 +59,13 @@ class AuthFragment : Fragment() {
         super.onStart()
         setHasOptionsMenu(true)
         getText()
-        getUserName()
+        setUserName()
         loading()
         navigate()
         exceptionHandling()
     }
 
-    private fun getUserName() {
+    private fun setUserName() {
         mBinding.loginEt.setText(registeredName)
     }
 
@@ -114,14 +114,7 @@ class AuthFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.change_theme_btn -> {
-                if (PreferencesProvider.preferences.getTheme() == AppCompatDelegate.MODE_NIGHT_NO) {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                    PreferencesProvider.preferences.setTheme(AppCompatDelegate.MODE_NIGHT_YES)
-                } else {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                    PreferencesProvider.preferences.setTheme(AppCompatDelegate.MODE_NIGHT_NO)
-                }
-            }
+                viewModel.changeTheme(PreferencesProvider.preferences.getTheme())            }
         }
         return super.onOptionsItemSelected(item)
     }
