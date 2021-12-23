@@ -1,6 +1,8 @@
 package com.khomichenko.sergey.homework1410.presentation.main_loan_screen.view_models
 
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -12,6 +14,8 @@ import com.khomichenko.sergey.homework1410.data.data_source.shared_preferences.P
 import com.khomichenko.sergey.homework1410.domain.worker.NotificationWorker
 import com.khomichenko.sergey.homework1410.domain.entity.main_loan.LoanEntity
 import com.khomichenko.sergey.homework1410.domain.usecase.GetAllLoansUseCase
+import com.khomichenko.sergey.homework1410.presentation.convecter.Converter
+import com.khomichenko.sergey.homework1410.presentation.entity.LoanPresentation
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -24,14 +28,15 @@ import javax.inject.Inject
 
 class MainLoanFragmentViewModel @Inject constructor(
     private val getAllLoansUseCase: GetAllLoansUseCase,
+    private val converter: Converter
 ) : ViewModel() {
 
     //загрузка
     private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean> = _loading
 
-    private val _allLoans = MutableLiveData<List<LoanEntity>>()
-    val allLoans: LiveData<List<LoanEntity>> = _allLoans
+    private val _allLoans = MutableLiveData<List<LoanPresentation>>()
+    val allLoans: LiveData<List<LoanPresentation>> = _allLoans
 
     private val _exception = MutableLiveData<String>()
     val exception: LiveData<String> = _exception
@@ -55,10 +60,13 @@ class MainLoanFragmentViewModel @Inject constructor(
         Log.e("MainViewModel", "Failed to post", throwable)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun getAllLoans() {
         _loading.value = true
         viewModelScope.launch(handler) {
-            val request = getAllLoansUseCase.invoke()
+            val request = getAllLoansUseCase.invoke().map { loan ->
+                converter.convertToPresentation(loan)
+            }
             withContext(Dispatchers.Main) {
                 _allLoans.value = request
                 _loading.value = false

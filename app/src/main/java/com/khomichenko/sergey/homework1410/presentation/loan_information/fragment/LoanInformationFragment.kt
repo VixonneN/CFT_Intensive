@@ -1,11 +1,13 @@
 package com.khomichenko.sergey.homework1410.presentation.loan_information.fragment
 
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -14,6 +16,7 @@ import com.khomichenko.sergey.homework1410.data.data_source.shared_preferences.P
 import com.khomichenko.sergey.homework1410.databinding.FragmentLoanInformationBinding
 import com.khomichenko.sergey.homework1410.di.App
 import com.khomichenko.sergey.homework1410.domain.entity.main_loan.LoanEntity
+import com.khomichenko.sergey.homework1410.presentation.entity.LoanPresentation
 import com.khomichenko.sergey.homework1410.presentation.loan_information.view_model.LoanInformationViewModel
 import javax.inject.Inject
 
@@ -27,7 +30,7 @@ class LoanInformationFragment : Fragment() {
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var viewModel: LoanInformationViewModel
 
-    private lateinit var currentLoan: LoanEntity
+    private lateinit var currentLoan: LoanPresentation
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,7 +38,7 @@ class LoanInformationFragment : Fragment() {
     ): View {
         _binding = FragmentLoanInformationBinding.inflate(layoutInflater, container, false)
         setHasOptionsMenu(true)
-        currentLoan = requireArguments().getSerializable("id_loan") as LoanEntity
+        currentLoan = requireArguments().getSerializable("id_loan") as LoanPresentation
         callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 navController().navigate(R.id.action_loanInformationFragment_to_mainLoanFragment)
@@ -66,16 +69,16 @@ class LoanInformationFragment : Fragment() {
     private fun setData() {
         viewModel.loanInformation.observe(this) { loanInfo ->
 
-            val state = viewModel.changeState(loanInfo.state)
+//            val state = viewModel.changeState(loanInfo.state)
             mBinding.lastNameEt.setText(loanInfo.lastName)
             mBinding.firstNameEt.setText(loanInfo.firstName)
             mBinding.mobileNumberEt.setText(loanInfo.phoneNumber)
             mBinding.amountEt.setText(String.format(loanInfo.amount.toString()))
             mBinding.percentEt.setText(loanInfo.percent.toString())
-            mBinding.loanStatusEt.setText(state)
+            mBinding.loanStatusEt.setText(loanInfo.state)
             mBinding.periodEt.setText(loanInfo.period.toString())
-            mBinding.dateLoanEt.setText(String.format(loanInfo.date.toString()))
-            setLoanText(state)
+            mBinding.dateLoanEt.setText(String.format(loanInfo.date))
+            setLoanText(loanInfo.state)
         }
     }
 
@@ -97,6 +100,7 @@ class LoanInformationFragment : Fragment() {
         inflater.inflate(R.menu.refresh_btn, menu)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.btn_refresh -> {

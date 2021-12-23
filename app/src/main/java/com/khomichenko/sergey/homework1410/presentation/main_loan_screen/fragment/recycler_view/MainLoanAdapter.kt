@@ -5,12 +5,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.khomichenko.sergey.homework1410.databinding.LoanItemBinding
 import com.khomichenko.sergey.homework1410.domain.entity.main_loan.LoanEntity
+import com.khomichenko.sergey.homework1410.presentation.entity.LoanPresentation
 
 class MainLoanAdapter(
-    private val onViewClickListener:(LoanEntity) -> Unit
+    private val onViewClickListener:(LoanPresentation) -> Unit
 ) : RecyclerView.Adapter<MainLoanViewHolder>() {
 
-    var loanList = emptyList<LoanEntity>()
+    var loanList = emptyList<LoanPresentation>()
     set(value) {
         field = value
         notifyDataSetChanged()
