@@ -1,6 +1,6 @@
 package com.khomichenko.sergey.homework1410.domain.entity.main_loan
 
-import com.khomichenko.sergey.homework1410.data.main_loan.LoanDTO
+import com.khomichenko.sergey.homework1410.data.dto.LoanDTO
 import java.io.Serializable
 import java.math.BigDecimal
 import java.util.*

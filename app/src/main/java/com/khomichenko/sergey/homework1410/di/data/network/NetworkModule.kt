@@ -2,8 +2,8 @@ package com.khomichenko.sergey.homework1410.di.data.network
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.khomichenko.sergey.homework1410.data.auth.auth_token.AuthInterceptor
-import com.khomichenko.sergey.homework1410.data.data_source.Api
+import com.khomichenko.sergey.homework1410.data.data_source.network.AuthInterceptor
+import com.khomichenko.sergey.homework1410.data.data_source.network.Api
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient

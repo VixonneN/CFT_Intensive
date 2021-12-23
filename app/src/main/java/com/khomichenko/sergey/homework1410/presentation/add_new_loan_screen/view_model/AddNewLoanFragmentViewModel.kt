@@ -17,6 +17,8 @@ import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import java.io.IOException
 import java.io.PrintStream
+import java.net.SocketTimeoutException
+import java.net.UnknownHostException
 import javax.inject.Inject
 
 class AddNewLoanFragmentViewModel @Inject constructor(
@@ -39,7 +41,20 @@ class AddNewLoanFragmentViewModel @Inject constructor(
     val exception: LiveData<String> = _exception
 
     private val handler = CoroutineExceptionHandler { _, throwable ->
-        Log.e("MainViewModel", "Failed to post", throwable)
+        when (throwable) {
+            is UnknownHostException -> Log.e("MainViewModel", "Failed to post", throwable)
+            is SocketTimeoutException -> Log.e("MainViewModel", "Failed to post", throwable)
+            is HttpException -> {
+                when (throwable.code()) {
+                    401 ->
+                        _exception.value =
+                            "Не удалось проверить авторизацию. Авторизируйтесь ещё раз"
+                    403 -> _exception.value = "Доступ запрещён"
+
+                    404 -> _exception.value = "Ничего не найдено, попробуйте ещё раз"
+                }
+            }
+        }
     }
 
     private val _loan = MutableLiveData<LoanEntity>()
@@ -56,75 +71,20 @@ class AddNewLoanFragmentViewModel @Inject constructor(
         _loading.value = true
         val createLoanEntity =
             CreateLoanEntity(amount, firstName, lastName, percent, period, number)
-        viewModelScope.launch(handler + Dispatchers.IO) {
-            try {
-                val response = createNewLoanUseCase.invoke(createLoanEntity).execute()
-                withContext(Dispatchers.Main) {
-                    if (response.code() == 200 || response.code() == 201) {
-                        _loan.value = response.body()?.toLoanEntity()
-                        _loading.value = false
-                        _finished.value = true
-                    } else if (response.code() == 401) {
-                        _exception.value =
-                            "Не удалось проверить авторизацию. Авторизируйтесь ещё раз"
-                        _loading.value = false
-                    } else if (response.code() == 403) {
-                        _exception.value = "Доступ запрещён"
-                        _loading.value = false
-
-                    } else if (response.code() == 404) {
-                        _exception.value = "Произошла какая-то ошибка, попробуйте ещё раз"
-                        _loading.value = false
-                    }
-                }
-            } catch (e: IOException) {
-                withContext(Dispatchers.Main) {
-                    _exception.value = "Произошла какая-то ошибка, попробуйте ещё раз"
-                    _loading.value = false
-                }
-            } catch (e: HttpException) {
-                withContext(Dispatchers.Main) {
-                    _exception.value = "Произошла какая-то ошибка, попробуйте ещё раз"
-                    _loading.value = false
-                }
-            }
+        viewModelScope.launch(handler) {
+            val response = createNewLoanUseCase.invoke(createLoanEntity)
+            _loan.value = response
+            _loading.value = false
+            _finished.value = true
         }
     }
 
     fun getConditions() {
         _loading.value = true
-        viewModelScope.launch(handler + Dispatchers.IO) {
-            try {
-                val response = getConditionsUseCase.invoke().execute()
-                withContext(Dispatchers.Main) {
-                    if (response.code() == 200 || response.code() == 201) {
-                        _conditions.value = response.body()?.toEntity()
-                        _loading.value = false
-                    } else if (response.code() == 401) {
-                        _exception.value =
-                            "Не удалось проверить авторизацию. Авторизируйтесь ещё раз"
-                        _loading.value = false
-
-                    } else if (response.code() == 403) {
-                        _exception.value = "Доступ запрещён"
-                        _loading.value = false
-
-                    } else if (response.code() == 404) {
-                        _exception.value = "Произошла какая-то ошибка, попробуйте ещё раз"
-                        _loading.value = false
-                    }
-                }
-            } catch (e: IOException) {
-                withContext(Dispatchers.Main) {
-                    _exception.value = "Произошла какая-то ошибка, попробуйте ещё раз"
-                    _loading.value = false
-                }
-            } catch (e: HttpException) {
-                withContext(Dispatchers.Main) {
-                    _exception.value = "Произошла какая-то ошибка, попробуйте ещё раз"
-                    _loading.value = false
-                }
-            }
+        viewModelScope.launch(handler) {
+            val response = getConditionsUseCase.invoke()
+            _conditions.value = response
+            _loading.value = false
         }
     }
 

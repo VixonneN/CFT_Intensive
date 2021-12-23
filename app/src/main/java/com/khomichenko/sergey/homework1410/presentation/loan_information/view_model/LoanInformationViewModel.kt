@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.khomichenko.sergey.homework1410.data.shared_preferences.PreferencesProvider
+import com.khomichenko.sergey.homework1410.data.data_source.shared_preferences.PreferencesProvider
 import com.khomichenko.sergey.homework1410.domain.entity.main_loan.LoanEntity
 import com.khomichenko.sergey.homework1410.domain.usecase.GetLoanInformationUseCase
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -15,6 +15,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import java.io.IOException
+import java.net.SocketTimeoutException
+import java.net.UnknownHostException
 import javax.inject.Inject
 
 class LoanInformationViewModel @Inject constructor(
@@ -22,7 +24,20 @@ class LoanInformationViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val handler = CoroutineExceptionHandler { _, throwable ->
-        Log.e("MainViewModel", "Failed to post", throwable)
+        when (throwable) {
+            is UnknownHostException -> Log.e("MainViewModel", "Failed to post", throwable)
+            is SocketTimeoutException -> Log.e("MainViewModel", "Failed to post", throwable)
+            is HttpException -> {
+                when (throwable.code()) {
+                    401 ->
+                        _exception.value =
+                            "Не удалось проверить авторизацию. Авторизируйтесь ещё раз"
+                    403 -> _exception.value = "Доступ запрещён"
+
+                    404 -> _exception.value = "Ничего не найдено, попробуйте ещё раз"
+                }
+            }
+        }
     }
 
     //загрузка
@@ -37,37 +52,10 @@ class LoanInformationViewModel @Inject constructor(
 
     fun getLoanInformation(id: Int) {
         _loading.value = true
-        viewModelScope.launch(Dispatchers.IO + handler) {
-            try {
-                val response = getLoanInformationUseCase.invoke(id).execute()
-                withContext(Dispatchers.Main) {
-                    if (response.code() == 200 || response.code() == 201) {
-                        _loanInformation.value = response.body()?.toLoanEntity()
-                        _loading.value = false
-                    } else if (response.code() == 401) {
-                        _exception.value =
-                            "Не удалось проверить авторизацию. Авторизируйтесь ещё раз"
-                        _loading.value = false
-                    } else if (response.code() == 403) {
-                        _exception.value = "Доступ запрещён"
-                        _loading.value = false
-
-                    } else if (response.code() == 404) {
-                        _exception.value = "Ничего не найдено, попробуйте ещё раз"
-                        _loading.value = false
-                    }
-                }
-            } catch (e: IOException) {
-                withContext(Dispatchers.Main) {
-                    _exception.value = "Произошла какая-то ошибка, попробуйте ещё раз"
-                    _loading.value = false
-                }
-            } catch (e: HttpException) {
-                withContext(Dispatchers.Main) {
-                    _exception.value = "Произошла какая-то ошибка, попробуйте ещё раз"
-                    _loading.value = false
-                }
-            }
+        viewModelScope.launch(handler) {
+            val response = getLoanInformationUseCase.invoke(id)
+            _loanInformation.value = response
+            _loading.value = false
         }
     }
 
@@ -85,7 +73,7 @@ class LoanInformationViewModel @Inject constructor(
         _loanInformation.value = loanEntity
     }
 
-    fun finishFragment(){
+    fun finishFragment() {
         _loading.value = false
     }
 

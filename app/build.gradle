@@ -26,8 +26,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility sourceCompatibility
+        targetCompatibility targetCompatibility
     }
     kotlinOptions {
         jvmTarget = '1.8'
@@ -41,8 +41,8 @@ dependencies {
     def retrofitVersion = "2.9.0"
 
     // Kotlin
-    implementation("androidx.navigation:navigation-fragment-ktx:$nav_version")
-    implementation("androidx.navigation:navigation-ui-ktx:$nav_version")
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
     //mask for telephone
     implementation 'ru.egslava:MaskedEditText:1.0.5'
@@ -51,6 +51,8 @@ dependencies {
     implementation "androidx.work:work-runtime-ktx:$work_version"
 
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2'
 
     //dagger
     implementation "com.google.dagger:dagger:$daggerVersion"
@@ -61,7 +63,7 @@ dependencies {
     //internet
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
     implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
-    implementation 'com.squareup.okhttp3:logging-interceptor:3.9.1'
+    implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2'
     implementation "com.squareup.retrofit2:converter-scalars:$retrofitVersion"
 
     implementation 'androidx.core:core-ktx:1.7.0'

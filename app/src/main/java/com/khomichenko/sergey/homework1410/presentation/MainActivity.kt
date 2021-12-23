@@ -5,11 +5,12 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.fragment.findNavController
 import com.khomichenko.sergey.homework1410.R
-import com.khomichenko.sergey.homework1410.data.shared_preferences.PreferencesProvider
+import com.khomichenko.sergey.homework1410.data.data_source.shared_preferences.PreferencesProvider
 import com.khomichenko.sergey.homework1410.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
+    //TODO Сделать адекватными состояния приложения
     private var _binding: ActivityMainBinding? = null
     private val mBinding get() = _binding!!
 

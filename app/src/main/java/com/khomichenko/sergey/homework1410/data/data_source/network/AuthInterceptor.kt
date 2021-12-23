@@ -1,7 +1,7 @@
-package com.khomichenko.sergey.homework1410.data.auth.auth_token
+package com.khomichenko.sergey.homework1410.data.data_source.network
 
 import android.text.TextUtils
-import com.khomichenko.sergey.homework1410.data.shared_preferences.PreferencesProvider
+import com.khomichenko.sergey.homework1410.data.data_source.shared_preferences.PreferencesProvider
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response

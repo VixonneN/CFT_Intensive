@@ -6,13 +6,12 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.work.WorkManager
 import com.khomichenko.sergey.homework1410.R
-import com.khomichenko.sergey.homework1410.data.shared_preferences.PreferencesProvider
+import com.khomichenko.sergey.homework1410.data.data_source.shared_preferences.PreferencesProvider
 import com.khomichenko.sergey.homework1410.databinding.FragmentMainLoanBinding
 import com.khomichenko.sergey.homework1410.di.App
 import com.khomichenko.sergey.homework1410.presentation.main_loan_screen.fragment.recycler_view.MainLoanAdapter

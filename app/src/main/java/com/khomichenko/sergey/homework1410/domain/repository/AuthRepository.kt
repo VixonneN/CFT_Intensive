@@ -1,11 +1,10 @@
 package com.khomichenko.sergey.homework1410.domain.repository
 
-import com.khomichenko.sergey.homework1410.data.auth.data_source.RegistrationResponse
 import com.khomichenko.sergey.homework1410.domain.entity.auth.AuthEntity
-import retrofit2.Call
+import com.khomichenko.sergey.homework1410.domain.entity.auth.RegistrationResponseEntity
 
 interface AuthRepository {
 
-    suspend fun logIn(authEntity: AuthEntity): Call<String>
-    suspend fun register(authEntity: AuthEntity): Call<RegistrationResponse>
+    suspend fun logIn(authEntity: AuthEntity): String
+    suspend fun register(authEntity: AuthEntity): RegistrationResponseEntity
 }

@@ -6,12 +6,11 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.khomichenko.sergey.homework1410.R
-import com.khomichenko.sergey.homework1410.data.shared_preferences.PreferencesProvider
+import com.khomichenko.sergey.homework1410.data.data_source.shared_preferences.PreferencesProvider
 import com.khomichenko.sergey.homework1410.databinding.FragmentLoanInformationBinding
 import com.khomichenko.sergey.homework1410.di.App
 import com.khomichenko.sergey.homework1410.domain.entity.main_loan.LoanEntity

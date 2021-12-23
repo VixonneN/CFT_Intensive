@@ -1,18 +1,14 @@
 package com.khomichenko.sergey.homework1410.domain.repository
 
-import com.khomichenko.sergey.homework1410.data.main_loan.ConditionsDTO
-import com.khomichenko.sergey.homework1410.data.main_loan.LoanDTO
+import com.khomichenko.sergey.homework1410.domain.entity.main_loan.ConditionsEntity
 import com.khomichenko.sergey.homework1410.domain.entity.main_loan.CreateLoanEntity
-import retrofit2.Call
+import com.khomichenko.sergey.homework1410.domain.entity.main_loan.LoanEntity
 
 interface LoanRepository {
 
-    suspend fun getAllLoan(): Call<List<LoanDTO>>
-
-    suspend fun createNewLoan(createLoanEntity: CreateLoanEntity): Call<LoanDTO>
-
-    suspend fun getConditions() : Call<ConditionsDTO>
-
-    suspend fun getLoanInformation(id: Int) :Call<LoanDTO>
+    suspend fun getAllLoan(): List<LoanEntity>
+    suspend fun createNewLoan(createLoanEntity: CreateLoanEntity): LoanEntity
+    suspend fun getConditions(): ConditionsEntity
+    suspend fun getLoanInformation(id: Int): LoanEntity
 
 }

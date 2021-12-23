@@ -1,4 +1,4 @@
-package com.khomichenko.sergey.homework1410.data.shared_preferences
+package com.khomichenko.sergey.homework1410.data.data_source.shared_preferences
 
 import android.content.Context
 import android.content.SharedPreferences

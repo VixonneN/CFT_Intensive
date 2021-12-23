@@ -6,15 +6,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.khomichenko.sergey.homework1410.data.shared_preferences.PreferencesProvider
+import com.khomichenko.sergey.homework1410.data.data_source.shared_preferences.PreferencesProvider
 import com.khomichenko.sergey.homework1410.domain.entity.auth.AuthEntity
 import com.khomichenko.sergey.homework1410.domain.usecase.LoginRequestUseCase
-import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import retrofit2.HttpException
-import java.io.IOException
+import java.net.SocketTimeoutException
+import java.net.UnknownHostException
 import javax.inject.Inject
 
 class AuthFragmentViewModel @Inject constructor(
@@ -32,7 +30,20 @@ class AuthFragmentViewModel @Inject constructor(
     val exception: LiveData<String> = _exception
 
     private val handler = CoroutineExceptionHandler { _, throwable ->
-        Log.e("MainViewModel", "Failed to post", throwable)
+        when (throwable) {
+            is UnknownHostException -> Log.e("MainViewModel", "Failed to post", throwable)
+            is SocketTimeoutException -> Log.e("MainViewModel", "Failed to post", throwable)
+            is HttpException -> {
+                when (throwable.code()) {
+                    401 ->
+                        _exception.value =
+                            "Не удалось проверить авторизацию. Авторизируйтесь ещё раз"
+                    403 -> _exception.value = "Доступ запрещён"
+
+                    404 -> _exception.value = "Ничего не найдено, попробуйте ещё раз"
+                }
+            }
+        }
     }
 
     fun login(login: String, password: String) {
@@ -43,41 +54,15 @@ class AuthFragmentViewModel @Inject constructor(
             _loading.value = true
             _finish.value = false
             viewModelScope.launch(handler + Dispatchers.IO) {
-                try {
-                    val response = loginRequestUseCase.invoke(dataRegisterBody).execute()
-                    withContext(Dispatchers.Main) {
-                        if (response.code() == 200 || response.code() == 201) {
-                            val token = response.body()
-                            if (token != null) {
-                                PreferencesProvider.preferences.saveToken(token)
-                                PreferencesProvider.preferences.setInitUser(true)
-                            }
-                            _loading.value = false
-                            _finish.value = true
-                        } else if (response.code() == 401) {
-                            _exception.value =
-                                "Не удалось проверить авторизацию. Авторизируйтесь ещё раз"
-                            _loading.value = false
-                        } else if (response.code() == 403) {
-                            _exception.value = "Доступ запрещён"
-                            _loading.value = false
-                        } else if (response.code() == 404) {
-                            _exception.value = "Произошла какая-то ошибка, попробуйте ещё раз"
-                            _loading.value = false
-                        }
-                    }
-                } catch (e: IOException) {
-                    withContext(Dispatchers.Main) {
-                        _exception.value = "Произошла какая-то ошибка, попробуйте ещё раз"
-                        _loading.value = false
-                    }
-
-                } catch (e: HttpException) {
-                    withContext(Dispatchers.Main) {
-                        _exception.value = "Произошла какая-то ошибка, попробуйте ещё раз"
-                        _loading.value = false
-                    }
+                val response = loginRequestUseCase.invoke(dataRegisterBody)
+                withContext(Dispatchers.Main) {
+                    val token = async { response }
+                    PreferencesProvider.preferences.saveToken(token.await())
+                    PreferencesProvider.preferences.setInitUser(true)
+                    _finish.value = true
+                    _loading.value = false
                 }
+
             }
         }
     }

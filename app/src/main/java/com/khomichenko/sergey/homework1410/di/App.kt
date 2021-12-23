@@ -1,7 +1,7 @@
 package com.khomichenko.sergey.homework1410.di
 
 import android.app.Application
-import com.khomichenko.sergey.homework1410.data.shared_preferences.PreferencesProvider
+import com.khomichenko.sergey.homework1410.data.data_source.shared_preferences.PreferencesProvider
 
 class App : Application() {
 

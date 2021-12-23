@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.work.Data
 import androidx.work.PeriodicWorkRequest
-import com.khomichenko.sergey.homework1410.data.shared_preferences.PreferencesProvider
+import com.khomichenko.sergey.homework1410.data.data_source.shared_preferences.PreferencesProvider
 import com.khomichenko.sergey.homework1410.domain.worker.NotificationWorker
 import com.khomichenko.sergey.homework1410.domain.entity.main_loan.LoanEntity
 import com.khomichenko.sergey.homework1410.domain.usecase.GetAllLoansUseCase
@@ -17,7 +17,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
-import java.io.IOException
+import java.net.SocketException
+import java.net.UnknownHostException
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -36,50 +37,44 @@ class MainLoanFragmentViewModel @Inject constructor(
     val exception: LiveData<String> = _exception
 
     private val handler = CoroutineExceptionHandler { _, throwable ->
+        when (throwable) {
+            is HttpException -> {
+                when (throwable.code()) {
+                    401 -> _exception.value =
+                        "Не удалось проверить авторизацию. Авторизируйтесь ещё раз"
+                    403 -> _exception.value = "Доступ запрещён"
+                    404 -> _exception.value = "Произошла какая-то ошибка, попробуйте ещё раз"
+                }
+            }
+            is UnknownHostException -> _exception.value =
+                "Произошла какая-то ошибка, попробуйте ещё раз"
+            is SocketException -> _exception.value =
+                "Произошла какая-то ошибка, попробуйте ещё раз"
+
+        }
         Log.e("MainViewModel", "Failed to post", throwable)
     }
 
     fun getAllLoans() {
         _loading.value = true
-        viewModelScope.launch(handler + Dispatchers.IO) {
-            try {
-                val request = getAllLoansUseCase.invoke().execute()
-                withContext(Dispatchers.Main) {
-                    if (request.code() == 200 || request.code() == 201) {
-                        _allLoans.value = request.body()?.map { it.toLoanEntity() }
-                        _loading.value = false
-                    } else if (request.code() == 401) {
-                        _exception.value = "Не удалось проверить авторизацию. Авторизируйтесь ещё раз"
-                        _loading.value = false
-                    } else if (request.code() == 403) {
-                        _exception.value = "Доступ запрещён"
-                        _loading.value = false
-                    } else if (request.code() == 404) {
-                        _exception.value = "Произошла какая-то ошибка, попробуйте ещё раз"
-                        _loading.value = false
-                    }
-                }
-            } catch (e: IOException) {
-                withContext(Dispatchers.Main) {
-                    _exception.value = "Произошла какая-то ошибка, попробуйте ещё раз"
-                    _loading.value = false
-                }
-            } catch (e: HttpException) {
-                withContext(Dispatchers.Main) {
-                    _exception.value = "Произошла какая-то ошибка, попробуйте ещё раз"
-                    _loading.value = false
-                }
+        viewModelScope.launch(handler) {
+            val request = getAllLoansUseCase.invoke()
+            withContext(Dispatchers.Main) {
+                _allLoans.value = request
+                _loading.value = false
             }
         }
     }
 
-    fun initializeWorker(loanEntity: LoanEntity) : PeriodicWorkRequest {
+    fun initializeWorker(loanEntity: LoanEntity): PeriodicWorkRequest {
         val data = Data.Builder()
             .putString("fio_loan", loanEntity.lastName + " " + loanEntity.firstName)
             .putInt("amount_loan", loanEntity.amount.toInt())
             .build()
-        return PeriodicWorkRequest.Builder(NotificationWorker::class.java,
-                25, TimeUnit.MINUTES)
+        return PeriodicWorkRequest.Builder(
+            NotificationWorker::class.java,
+            25, TimeUnit.MINUTES
+        )
             .setInputData(data)
             .build()
     }
@@ -94,7 +89,7 @@ class MainLoanFragmentViewModel @Inject constructor(
         }
     }
 
-    fun finishFragment(){
+    fun finishFragment() {
         _loading.value = false
     }
 }

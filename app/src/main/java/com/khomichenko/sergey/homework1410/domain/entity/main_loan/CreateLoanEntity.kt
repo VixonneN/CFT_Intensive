@@ -1,6 +1,6 @@
 package com.khomichenko.sergey.homework1410.domain.entity.main_loan
 
-import com.khomichenko.sergey.homework1410.data.main_loan.CreateLoanBody
+import com.khomichenko.sergey.homework1410.data.dto.CreateLoanBody
 
 data class CreateLoanEntity(
     val amount: Int,

@@ -3,21 +3,19 @@ package com.khomichenko.sergey.homework1410.presentation.auth_screen.view_models
 import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.*
-import com.khomichenko.sergey.homework1410.data.shared_preferences.PreferencesProvider
+import com.khomichenko.sergey.homework1410.data.data_source.shared_preferences.PreferencesProvider
 import com.khomichenko.sergey.homework1410.domain.entity.auth.AuthEntity
 import com.khomichenko.sergey.homework1410.domain.usecase.RegisterRequestUseCase
 import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import retrofit2.HttpException
-import java.io.IOException
+import java.net.SocketTimeoutException
+import java.net.UnknownHostException
 import javax.inject.Inject
 
 class RegistrationFragmentViewModel @Inject constructor(
     private val registerRequestUseCase: RegisterRequestUseCase,
 ) : ViewModel() {
-
 
     //Имя, указанное при регистрации
     private val _resultName = MutableLiveData<String>()
@@ -36,7 +34,20 @@ class RegistrationFragmentViewModel @Inject constructor(
     val exception: LiveData<String> = _exception
 
     private val handler = CoroutineExceptionHandler { _, throwable ->
-        Log.e("MainViewModel", "Failed to post", throwable)
+        when (throwable) {
+            is UnknownHostException -> Log.e("MainViewModel", "Failed to post", throwable)
+            is SocketTimeoutException -> Log.e("MainViewModel", "Failed to post", throwable)
+            is HttpException -> {
+                when (throwable.code()) {
+                    401 ->
+                        _exception.value =
+                            "Не удалось проверить авторизацию. Авторизируйтесь ещё раз"
+                    403 -> _exception.value = "Доступ запрещён"
+
+                    404 -> _exception.value = "Ничего не найдено, попробуйте ещё раз"
+                }
+            }
+        }
     }
 
     fun register(login: String, password: String) {
@@ -46,42 +57,12 @@ class RegistrationFragmentViewModel @Inject constructor(
             val dataRegisterBody = AuthEntity(login, password)
             _loading.value = true
             _finish.value = false
-            viewModelScope.launch(handler + Dispatchers.IO) {
-                try {
-                    val response = registerRequestUseCase.invoke(dataRegisterBody).execute()
-                    withContext(Dispatchers.Main) {
-                        if (response.code() == 200 || response.code() == 201) {
-                            val name = response.body()?.toEntity()?.name
-                            _resultName.value = name
-                            _loading.value = false
-                            _finish.value = true
-                        } else if (response.code() == 400) {
-                            _exception.value = "Пользователь уже существует"
-                            _loading.value = false
-                        } else if (response.code() == 401) {
-                            _exception.value =
-                                "Не удалось проверить авторизацию. Авторизируйтесь ещё раз"
-                            _loading.value = false
-                        } else if (response.code() == 403) {
-                            _exception.value = "Доступ запрещён"
-                            _loading.value = false
-                        } else if (response.code() == 404) {
-                            _exception.value = "Ничего не найдено, попробуйте ещё раз"
-                            _loading.value = false
-                        }
-                    }
-                } catch (e: IOException) {
-                    withContext(Dispatchers.Main) {
-                        _loading.value = false
-                        _exception.value = "Произошла какая-то ошибка, попробуйте ещё раз"
-                    }
-
-                } catch (e: HttpException) {
-                    withContext(Dispatchers.Main) {
-                        _loading.value = false
-                        _exception.value = "Произошла ошибка сети, попробуйте ещё раз"
-                    }
-                }
+            viewModelScope.launch(handler) {
+                val response = registerRequestUseCase.invoke(dataRegisterBody)
+                val name = response.name
+                _resultName.value = name
+                _loading.value = false
+                _finish.value = true
             }
         }
     }
