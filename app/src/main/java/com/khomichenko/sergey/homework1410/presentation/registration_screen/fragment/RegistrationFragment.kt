@@ -1,7 +1,8 @@
-package com.khomichenko.sergey.homework1410.presentation.auth_screen.fragment
+package com.khomichenko.sergey.homework1410.presentation.registration_screen.fragment
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.Toast
@@ -12,7 +13,7 @@ import com.khomichenko.sergey.homework1410.R
 import com.khomichenko.sergey.homework1410.data.data_source.shared_preferences.PreferencesProvider
 import com.khomichenko.sergey.homework1410.databinding.FragmentRegistrationBinding
 import com.khomichenko.sergey.homework1410.di.App
-import com.khomichenko.sergey.homework1410.presentation.auth_screen.view_models.RegistrationFragmentViewModel
+import com.khomichenko.sergey.homework1410.presentation.registration_screen.view_model.RegistrationFragmentViewModel
 import javax.inject.Inject
 
 class RegistrationFragment : Fragment() {
@@ -28,8 +29,10 @@ class RegistrationFragment : Fragment() {
         super.onAttach(context)
         (requireActivity().application as App).appComponent.inject(this)
         viewModel =
-            ViewModelProvider(this,
-                viewModelFactory)[RegistrationFragmentViewModel::class.java]
+            ViewModelProvider(
+                this,
+                viewModelFactory
+            )[RegistrationFragmentViewModel::class.java]
     }
 
     override fun onCreateView(
@@ -44,22 +47,24 @@ class RegistrationFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         setHasOptionsMenu(true)
-        if (PreferencesProvider.preferences.getInitUser() &&
-            PreferencesProvider.preferences.savedToken.isNotEmpty()) {
+        viewModel.checkToken()
 
-            navigation().navigate(R.id.action_registrationFragment_to_mainLoanFragment)
-        } else {
-            deleteData()
-            sendData()
-            loading()
-            navigate()
-            exceptionHandling()
+        viewModel.userLogin.observe(viewLifecycleOwner) {
+            if (it == true) {
+                navigation().navigate(R.id.action_registrationFragment_to_mainLoanFragment)
+            }
         }
+        deleteData()
+        sendData()
+        loading()
+        navigate()
+        exceptionHandling()
+
     }
 
+    //уточнить для чего
     private fun deleteData() {
-        PreferencesProvider.preferences.deleteToken()
-        PreferencesProvider.preferences.setInitUser(false)
+        viewModel.deleteUser()
     }
 
     private fun sendData() {
@@ -70,8 +75,9 @@ class RegistrationFragment : Fragment() {
         }
     }
 
+    //перевести в стейты
     private fun loading() {
-        viewModel.loading.observe(this) { startLoading ->
+        viewModel.loading.observe(viewLifecycleOwner) { startLoading ->
             if (startLoading) {
                 mBinding.authProgressBar.visibility = View.VISIBLE
                 mBinding.registrateBtnReg.isEnabled = false
@@ -85,7 +91,7 @@ class RegistrationFragment : Fragment() {
     }
 
     private fun exceptionHandling() {
-        viewModel.exception.observe(this) { exception ->
+        viewModel.exception.observe(viewLifecycleOwner) { exception ->
             Toast.makeText(context, exception, Toast.LENGTH_SHORT).show()
         }
     }
@@ -94,7 +100,7 @@ class RegistrationFragment : Fragment() {
         mBinding.loginBtnReg.setOnClickListener {
             navigation().navigate(R.id.action_registrationFragment_to_authFragment)
         }
-        viewModel.finish.observe(this) { finished ->
+        viewModel.finish.observe(viewLifecycleOwner) { finished ->
             if (finished) {
                 val bundle = Bundle()
                 viewModel.resultName.observe(this) { name ->
@@ -115,7 +121,7 @@ class RegistrationFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.change_theme_btn -> {
-                viewModel.changeTheme(PreferencesProvider.preferences.getTheme())
+                viewModel.changeTheme()
             }
         }
         return super.onOptionsItemSelected(item)
